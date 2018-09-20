@@ -22,6 +22,7 @@
         <itemPath>mcc_generated_files/mcc.h</itemPath>
         <itemPath>mcc_generated_files/device_config.h</itemPath>
       </logicalFolder>
+      <itemPath>usb_app.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -37,13 +38,13 @@
         <itemPath>mcc_generated_files/usb/usb_device_events.c</itemPath>
         <itemPath>mcc_generated_files/usb/usb_device.c</itemPath>
         <itemPath>mcc_generated_files/usb/usb_device_cdc.c</itemPath>
-        <itemPath>mcc_generated_files/usb/example_mcc_usb_cdc.c</itemPath>
         <itemPath>mcc_generated_files/pin_manager.c</itemPath>
         <itemPath>mcc_generated_files/interrupt_manager.c</itemPath>
         <itemPath>mcc_generated_files/mcc.c</itemPath>
         <itemPath>mcc_generated_files/device_config.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
+      <itemPath>usb_app.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -52,6 +53,10 @@
       <itemPath>usb_board.mc3</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>cjson</Elem>
+    <Elem>microjson</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="default" type="2">
