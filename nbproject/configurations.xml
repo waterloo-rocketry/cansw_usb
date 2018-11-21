@@ -23,6 +23,8 @@
         <itemPath>mcc_generated_files/device_config.h</itemPath>
       </logicalFolder>
       <itemPath>usb_app.h</itemPath>
+      <itemPath>canlib/mcp2515/mcp_2515.h</itemPath>
+      <itemPath>spi.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -45,6 +47,8 @@
       </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>usb_app.c</itemPath>
+      <itemPath>canlib/mcp2515/mcp_2515.c</itemPath>
+      <itemPath>spi.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -56,6 +60,7 @@
   <sourceRootList>
     <Elem>cjson</Elem>
     <Elem>microjson</Elem>
+    <Elem>canlib/mcp2515</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

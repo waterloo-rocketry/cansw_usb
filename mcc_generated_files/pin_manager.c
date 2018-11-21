@@ -65,13 +65,13 @@ void PIN_MANAGER_Initialize(void)
     /**
     TRISx registers
     */
-    TRISA = 0x30;
-    TRISC = 0x3F;
+    TRISA = 0b00110000;
+    TRISC = 0b00110010;
 
     /**
     ANSELx registers
     */
-    ANSELC = 0x0F;
+    ANSELC = 0x00;
     ANSELA = 0x10;
 
     /**
@@ -80,18 +80,10 @@ void PIN_MANAGER_Initialize(void)
     WPUA = 0x00;
     OPTION_REGbits.nWPUEN = 1;
 
-
-
     /**
     APFCONx registers
     */
     APFCON = 0x00;
-
-
-
-
-   
-    
 }
   
 void PIN_MANAGER_IOC(void)

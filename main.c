@@ -43,6 +43,8 @@
 
 #include "mcc_generated_files/mcc.h"
 #include "usb_app.h"
+#include "canlib/mcp2515/mcp_2515.h"
+#include "spi.h"
 
 /*
                          Main application
@@ -52,6 +54,23 @@ void main(void)
     // initialize the device
     SYSTEM_Initialize();
 
+    spi_init();
+
+    //initialize the CAN module
+    can_t can_setup;
+    can_setup.brp = 0;
+    can_setup.sjw = 3;
+    can_setup.btlmode = 0x01;
+    can_setup.sam = 0;
+    can_setup.seg1ph = 0x04;
+    can_setup.prseg1 = 0;
+    can_setup.seg2ph = 0x04;
+
+    mcp_can_init(&can_setup, spi_read, spi_write, cs_drive);
+
+    while(!usb_app_write_string("Finished CAN setup\n\r", 20))
+        usb_app_heartbeat();
+
     // When using interrupts, you need to set the Global and Peripheral Interrupt Enable bits
     // Use the following macros to:
 
@@ -60,12 +79,6 @@ void main(void)
 
     // Enable the Peripheral Interrupts
     INTERRUPT_PeripheralInterruptEnable();
-
-    // Disable the Global Interrupts
-    //INTERRUPT_GlobalInterruptDisable();
-
-    // Disable the Peripheral Interrupts
-    //INTERRUPT_PeripheralInterruptDisable();
 
     uint16_t counter = 0;
     while (1)
