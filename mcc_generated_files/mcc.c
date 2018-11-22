@@ -53,10 +53,22 @@ void SYSTEM_Initialize(void)
     PIN_MANAGER_Initialize();
     OSCILLATOR_Initialize();
     WDT_Initialize();
+    TIMER_Initialize();
     USBDeviceInit();
     USBDeviceAttach();
 }
 
+void TIMER_Initialize(void)
+{
+    //enable timer1
+    T1CONbits.TMR1ON = 1;
+    //use FOSC/4 as clock source
+    T1CONbits.TMR1CS = 0;
+    //make this clock run as slow as possible
+    T1CONbits.T1CKPS = 0b11;
+    //enable interrupt from this timer
+    PIE1bits.TMR1IE = 1;
+}
 void OSCILLATOR_Initialize(void)
 {
     // SCS FOSC; SPLLMULT 3xPLL; SPLLEN disabled; IRCF 16MHz_HF; 

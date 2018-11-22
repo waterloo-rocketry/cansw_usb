@@ -46,6 +46,13 @@
 #include "canlib/mcp2515/mcp_2515.h"
 #include "spi.h"
 
+#define LED_1_OFF do{LATC4 = 1;}while(0)
+#define LED_2_OFF do{LATC5 = 1;}while(0)
+#define LED_1_ON  do{LATC4 = 0;}while(0)
+#define LED_2_ON  do{LATC5 = 0;}while(0)
+
+#define BLINK_LEDS(before_time_off, after_time_on) do{ __delay_ms(before_time_off); LED_1_ON; LED_2_ON; __delay_ms(after_time_on); LED_1_OFF; LED_2_OFF;}while(0)
+
 /*
                          Main application
  */
@@ -53,6 +60,8 @@ void main(void)
 {
     // initialize the device
     SYSTEM_Initialize();
+
+    BLINK_LEDS(50, 100);
 
     spi_init();
 
@@ -68,6 +77,8 @@ void main(void)
 
     mcp_can_init(&can_setup, spi_read, spi_write, cs_drive);
 
+    BLINK_LEDS(50, 300);
+
     while(!usb_app_write_string("Finished CAN setup\n\r", 20))
         usb_app_heartbeat();
 
@@ -80,7 +91,6 @@ void main(void)
     // Enable the Peripheral Interrupts
     INTERRUPT_PeripheralInterruptEnable();
 
-    uint16_t counter = 0;
     while (1)
     {
         // Add your application code
@@ -89,8 +99,6 @@ void main(void)
         if(usb_app_available_bytes() != 0) {
             char kill[80];
             usb_app_read_bytes(kill, sizeof(kill));
-            counter = 0;
-            usb_app_write_string("hello\n\r", 7);
         }
     }
 }

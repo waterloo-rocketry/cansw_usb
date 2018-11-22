@@ -48,6 +48,9 @@
 
 #include "interrupt_manager.h"
 #include "mcc.h"
+#include "../usb_app.h"
+
+static uint16_t counter = 0;
 
 void __interrupt() INTERRUPT_InterruptManager (void)
 {
@@ -58,14 +61,23 @@ void __interrupt() INTERRUPT_InterruptManager (void)
         {
             USB_USBDeviceTasks();
         } 
+        else if (PIE1bits.TMR1IE == 1 && PIR1bits.TMR1IF == 1)
+        {
+            if(counter++ == 100) {
+                const char* message = "hello world\n\r";
+                usb_app_write_string(message, strlen(message));
+                counter = 0;
+            }
+            PIR1bits.TMR1IF = 0;
+        }
         else
         {
-            //Unhandled Interrupt
+            //Unhandled interrupt
         }
     }      
     else
     {
-        //Unhandled Interrupt
+        //Unhandled interrupt
     }
 }
 /**

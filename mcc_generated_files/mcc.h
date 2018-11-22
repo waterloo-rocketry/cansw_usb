@@ -69,6 +69,8 @@
  */
 void SYSTEM_Initialize(void);
 
+void TIMER_Initialize(void);
+
 /**
  * @Param
     none
