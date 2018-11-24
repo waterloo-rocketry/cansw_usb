@@ -37,6 +37,34 @@ void usb_app_heartbeat(void)
     CDCTxService();
 }
 
+uint8_t usb_app_report_can_msg(const can_msg_t *msg) {
+    char temp_buffer[3*7+9];
+    const char hex_lookup_table[16] = {
+        '0', '1', '2', '3',
+        '4', '5', '6', '7',
+        '8', '9', 'A', 'B',
+        'C', 'D', 'E', 'F'
+    };
+
+    temp_buffer[0] = hex_lookup_table[(msg->sid >> 8) & 0xf];
+    temp_buffer[1] = hex_lookup_table[(msg->sid >> 4) & 0xf];
+    temp_buffer[3] = ':';
+    uint8_t i;
+    for(i = 0; i < msg->data_len && i < 8; ++i) {
+        temp_buffer[3*i + 4] = hex_lookup_table[(msg->data[i] >> 4)];
+        temp_buffer[3*i + 5] = hex_lookup_table[(msg->data[i] & 0xf)];
+        temp_buffer[3*i + 6] = ',';
+    }
+    i -= 1;
+    temp_buffer[3*i + 6] = '\n';
+    temp_buffer[3*i + 7] = '\r';
+    temp_buffer[3*i + 8] = '\0';
+    if(usb_app_write_string(temp_buffer, strlen(temp_buffer))) {
+        return 1;
+    }
+    return 0;
+}
+
 uint8_t usb_app_available_bytes(void) {
     return read_buffer_len;
 }

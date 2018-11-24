@@ -64,9 +64,13 @@ void __interrupt() INTERRUPT_InterruptManager (void)
         else if (PIE1bits.TMR1IE == 1 && PIR1bits.TMR1IF == 1)
         {
             if(counter++ == 100) {
-                const char* message = "hello world\n\r";
-                usb_app_write_string(message, strlen(message));
-                counter = 0;
+              can_msg_t msg;
+              msg.sid = 0x7ef;
+              msg.data_len = 2;
+              msg.data[0] = 0xAA;
+              msg.data[1] = 0xBB;
+              usb_app_report_can_msg(&msg);
+              counter = 0;
             }
             PIR1bits.TMR1IF = 0;
         }

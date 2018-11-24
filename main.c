@@ -90,6 +90,24 @@ void main(void)
 
     // Enable the Peripheral Interrupts
     INTERRUPT_PeripheralInterruptEnable();
+    
+    can_msg_t msg_send, msg_recv;
+    msg_send.data[0] = 0xAA;
+    msg_send.data[1] = 0xCC;
+    msg_send.sid = 0x7ef;
+    msg_send.data_len = 2;
+    
+    mcp_can_send(&msg_send);
+    
+    BLINK_LEDS(100,100);
+    
+    mcp_can_receive(&msg_recv);
+    
+    if(msg_recv.sid == 0x7ef)
+        LED_1_ON;
+    else
+        LED_2_ON;
+    
 
     while (1)
     {
