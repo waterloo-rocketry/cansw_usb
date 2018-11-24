@@ -48,6 +48,7 @@ uint8_t usb_app_report_can_msg(const can_msg_t *msg) {
 
     temp_buffer[0] = hex_lookup_table[(msg->sid >> 8) & 0xf];
     temp_buffer[1] = hex_lookup_table[(msg->sid >> 4) & 0xf];
+    temp_buffer[2] = hex_lookup_table[msg->sid & 0xf];
     temp_buffer[3] = ':';
     uint8_t i;
     for(i = 0; i < msg->data_len && i < 8; ++i) {
