@@ -37,29 +37,52 @@ void usb_app_heartbeat(void)
     CDCTxService();
 }
 
+bool compare_can_msg(const can_msg_t *msg1, const can_msg_t *msg2) {
+    if(msg1->data_len != msg2->data_len) {
+        return false;
+    }
+    for(int i = 0; i < msg1->data_len; i++) {
+        if(msg1->data[i] != msg2->data[i]){
+            return false;
+        }
+    }
+    if(msg1->sid != msg2->sid) {
+        return false; 
+    }
+    return true;
+}
+
 uint8_t usb_app_report_can_msg(const can_msg_t *msg) {
     char temp_buffer[3*7+9];
+    static can_msg_t last_received_message;
     const char hex_lookup_table[16] = {
         '0', '1', '2', '3',
         '4', '5', '6', '7',
         '8', '9', 'A', 'B',
         'C', 'D', 'E', 'F'
     };
-
-    temp_buffer[0] = hex_lookup_table[(msg->sid >> 8) & 0xf];
-    temp_buffer[1] = hex_lookup_table[(msg->sid >> 4) & 0xf];
-    temp_buffer[2] = hex_lookup_table[msg->sid & 0xf];
-    temp_buffer[3] = ':';
-    uint8_t i;
-    for(i = 0; i < msg->data_len && i < 8; ++i) {
-        temp_buffer[3*i + 4] = hex_lookup_table[(msg->data[i] >> 4)];
-        temp_buffer[3*i + 5] = hex_lookup_table[(msg->data[i] & 0xf)];
-        temp_buffer[3*i + 6] = ',';
+    
+    if(compare_can_msg(msg, &last_received_message)) {
+        temp_buffer[0] = '.';
+        temp_buffer[1] = '\0';
     }
-    i -= 1;
-    temp_buffer[3*i + 6] = '\n';
-    temp_buffer[3*i + 7] = '\r';
-    temp_buffer[3*i + 8] = '\0';
+    else {
+        last_received_message = *msg;
+        temp_buffer[0] = hex_lookup_table[(msg->sid >> 8) & 0xf];
+        temp_buffer[1] = hex_lookup_table[(msg->sid >> 4) & 0xf];
+        temp_buffer[2] = hex_lookup_table[msg->sid & 0xf];
+        temp_buffer[3] = ':';
+        uint8_t i;
+        for(i = 0; i < msg->data_len && i < 8; ++i) {
+            temp_buffer[3*i + 4] = hex_lookup_table[(msg->data[i] >> 4)];
+            temp_buffer[3*i + 5] = hex_lookup_table[(msg->data[i] & 0xf)];
+            temp_buffer[3*i + 6] = ',';
+        }
+        i -= 1;
+        temp_buffer[3*i + 6] = '\n';
+        temp_buffer[3*i + 7] = '\r';
+        temp_buffer[3*i + 8] = '\0';
+    }
     if(usb_app_write_string(temp_buffer, strlen(temp_buffer))) {
         return 1;
     }
