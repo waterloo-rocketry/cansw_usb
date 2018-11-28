@@ -25,6 +25,7 @@
       <itemPath>usb_app.h</itemPath>
       <itemPath>canlib/mcp2515/mcp_2515.h</itemPath>
       <itemPath>spi.h</itemPath>
+      <itemPath>canlib/can.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -60,7 +61,7 @@
   <sourceRootList>
     <Elem>cjson</Elem>
     <Elem>microjson</Elem>
-    <Elem>canlib/mcp2515</Elem>
+    <Elem>canlib</Elem>
   </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

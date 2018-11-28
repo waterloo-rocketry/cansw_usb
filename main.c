@@ -43,7 +43,7 @@
 
 #include "mcc_generated_files/mcc.h"
 #include "usb_app.h"
-#include "canlib/mcp2515/mcp_2515.h"
+#include "canlib/can.h"
 #include "spi.h"
 
 #define LED_1_OFF do{LATC4 = 1;}while(0)
@@ -66,13 +66,13 @@ void main(void)
     spi_init();
 
     //initialize the CAN module
-    can_t can_setup;
+    can_timing_t can_setup;
     can_setup.brp = 0;
     can_setup.sjw = 3;
     can_setup.btlmode = 0x01;
     can_setup.sam = 0;
     can_setup.seg1ph = 0x04;
-    can_setup.prseg1 = 0;
+    can_setup.prseg = 0;
     can_setup.seg2ph = 0x04;
 
     mcp_can_init(&can_setup, spi_read, spi_write, cs_drive);
