@@ -52,6 +52,23 @@ bool compare_can_msg(const can_msg_t *msg1, const can_msg_t *msg2) {
     return true;
 }
 
+uint8_t debug_level_message(const can_msg_t *msg) {
+    return (msg->sid % 5);
+}
+uint8_t allow_debug_messages() {// was: allow_sensor_messages() --> not sure if that was intended
+    return 2;
+}
+uint8_t max_debug_level() {
+    return 2;
+}
+
+bool is_sensor_data(const can_msg_t *msg) {
+    return (msg->sid == 0xAA);
+}
+bool allow_sensor_messages() { 
+    return false;
+}
+
 uint8_t usb_app_report_can_msg(const can_msg_t *msg) {
     char temp_buffer[3*7+9];
     static can_msg_t last_received_message;
@@ -62,6 +79,14 @@ uint8_t usb_app_report_can_msg(const can_msg_t *msg) {
         'C', 'D', 'E', 'F'
     };
     
+    if(is_sensor_data(msg)) { 
+        if(!allow_sensor_messages()) {
+            return 0;
+        }
+    }
+    if(!(debug_level_message(msg) <= max_debug_level())) {
+        return 0;
+    }
     if(compare_can_msg(msg, &last_received_message)) {
         temp_buffer[0] = '.';
         temp_buffer[1] = '\0';
