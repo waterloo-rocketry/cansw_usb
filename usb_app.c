@@ -37,6 +37,7 @@ void usb_app_heartbeat(void)
     CDCTxService();
 }
 
+// Compares 2 messages (and therefore all of their elements)
 bool compare_can_msg(const can_msg_t *msg1, const can_msg_t *msg2) {
     if(msg1->data_len != msg2->data_len) {
         return false;
@@ -55,9 +56,7 @@ bool compare_can_msg(const can_msg_t *msg1, const can_msg_t *msg2) {
 uint8_t debug_level_message(const can_msg_t *msg) {
     return (msg->sid % 5);
 }
-uint8_t allow_debug_messages() {// was: allow_sensor_messages() --> not sure if that was intended
-    return 2;
-}
+
 uint8_t max_debug_level() {
     return 2;
 }
@@ -65,6 +64,7 @@ uint8_t max_debug_level() {
 bool is_sensor_data(const can_msg_t *msg) {
     return (msg->sid == 0xAA);
 }
+
 bool allow_sensor_messages() { 
     return false;
 }
@@ -79,20 +79,37 @@ uint8_t usb_app_report_can_msg(const can_msg_t *msg) {
         'C', 'D', 'E', 'F'
     };
     
+    // Check for if the incoming message is a sensor data
+    // If message is sensor data, check for if the sensor messages is allowed to be printed
+    // If sensor messages are not allowed to be printed, exits function early
+    // If sensor messages allowed, it prints the message normally
     if(is_sensor_data(msg)) { 
         if(!allow_sensor_messages()) {
             return 0;
         }
     }
-    if(!(debug_level_message(msg) <= max_debug_level())) {
+    
+    // Check for if the message coming in has a sid value > max_debug_level
+    // If true, exits function early, otherwise it prints the message normally
+    if(debug_level_message(msg) > max_debug_level()) {
         return 0;
     }
+    
+    // Checks if the last message is the same as the new message coming in
+    // If true, prints a dot and ends the function
+    // Otherwise, prints the message normally
     if(compare_can_msg(msg, &last_received_message)) {
         temp_buffer[0] = '.';
         temp_buffer[1] = '\0';
     }
     else {
         last_received_message = *msg;
+        // temp_buffer is the character array of the message that gets printed
+        // out when usb_app_report_can_msg is called on.
+        // The first 3 characters are the sid of the input message followed by a ':'
+        // The next 2 characters are elements of the data array apart of the input message followed by a ','
+        // The next 2 characters are for formatting output
+        // The last character is used to end the string made from temp_buffer
         temp_buffer[0] = hex_lookup_table[(msg->sid >> 8) & 0xf];
         temp_buffer[1] = hex_lookup_table[(msg->sid >> 4) & 0xf];
         temp_buffer[2] = hex_lookup_table[msg->sid & 0xf];
@@ -108,6 +125,8 @@ uint8_t usb_app_report_can_msg(const can_msg_t *msg) {
         temp_buffer[3*i + 7] = '\r';
         temp_buffer[3*i + 8] = '\0';
     }
+    
+    // Writes temp_buffer to a string
     if(usb_app_write_string(temp_buffer, strlen(temp_buffer))) {
         return 1;
     }
