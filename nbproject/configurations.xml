@@ -74,10 +74,10 @@
         <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>2.00</languageToolchainVersion>
-        <platform>2</platform>
+        <platform>3</platform>
       </toolsSet>
       <packs>
-        <pack name="PIC12-16F1xxx_DFP" vendor="Microchip" version="0.1.7"/>
+        <pack name="PIC12-16F1xxx_DFP" vendor="Microchip" version="1.0.21"/>
       </packs>
       <compileType>
         <linkerTool>
