@@ -27,6 +27,7 @@ int main()
     if (!allow_sensor_messages()) {
         printf("%sTEST FAILED%s: allowing sensor messages\n", RED_TEXT, RESET_TEXT);
         failed_tests++;
+        printf("This is the allow_sensor_messages: %d\n", allow_sensor_messages());
     } else {
         printf("%sTEST PASSED%s: allowing sensor messages\n", GREEN_TEXT, RESET_TEXT);
     }
@@ -34,7 +35,7 @@ int main()
     //TEST 3: set both debug level and sensor messages
     total_tests++;
     parse_usb_string("G0;S0;");
-    if (max_debug_level() != 0 || allow_sensor_messages) {
+    if (max_debug_level() != 0 || allow_sensor_messages()) {
         printf("%sTEST FAILED%s: setting both debug level and sensor messages\n",
                RED_TEXT, RESET_TEXT);
         failed_tests++;
@@ -48,7 +49,7 @@ int main()
     parse_usb_string("G");
     parse_usb_string("3");
     parse_usb_string(";");
-    if (max_debug_level() != 2) {
+    if (max_debug_level() != 3) { // was "if (max_debug_level() != 2)" --> but should set debug level to 3
         printf("%sTEST FAILED%s: change debug level in three calls to parse_usb_string\n",
                RED_TEXT, RESET_TEXT);
         failed_tests++;
@@ -113,7 +114,10 @@ int main()
                RESET_TEXT);
     }
 
-
+    // Check for if the current config gets printed
+    parse_usb_string("L;");
+    parse_usb_string("L");
+    parse_usb_string(";");
 
 
 
