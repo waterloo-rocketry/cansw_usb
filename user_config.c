@@ -42,7 +42,7 @@ void parse_usb_string(const char *input) {
 					sprintf(config_msg, "Current Config: Max debug level = %d & Sensor messages %s allowed!", max_debug_level(), sensor_check);
 					config_msg[71] = '\n';
 					config_msg[72] = '\0';
-					usb_app_write_string(config_msg, 75);
+					usb_app_write_string(config_msg, 72);
 					break;
 				}
 			} // @suppress("No break at end of case")
