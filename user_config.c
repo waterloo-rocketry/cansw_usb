@@ -44,9 +44,7 @@ void parse_usb_string(const char *input) {
 						strcpy(sensor_check, "are");
 						if (!allow_sensor_messages())
 							strcat(sensor_check, " not");
-						msg_length = snprintf(config_msg, 72, "Current Config: Max debug level = %d & Sensor messages %s allowed!", max_debug_level(), sensor_check);
-						config_msg[71] = '\r\n';
-						config_msg[72] = '\0';
+						msg_length = snprintf(config_msg, 72, "Current Config: Max debug level = %d & Sensor messages %s allowed!\r\n", max_debug_level(), sensor_check);
 						usb_app_write_string(config_msg, msg_length);
 						break;
 					}
