@@ -45,6 +45,7 @@
 #include "usb_app.h"
 #include "canlib/can.h"
 #include "spi.h"
+#include "user_config.h"
 
 #define LED_1_OFF do{LATC4 = 1;}while(0)
 #define LED_2_OFF do{LATC5 = 1;}while(0)
@@ -115,8 +116,9 @@ void main(void)
         usb_app_heartbeat();
 
         if(usb_app_available_bytes() != 0) {
-            char kill[80];
-            usb_app_read_bytes(kill, sizeof(kill));
+            char input_string[64];
+            usb_app_read_bytes(input_string, sizeof(input_string));
+            parse_usb_string(input_string);
         }
     }
 }

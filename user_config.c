@@ -21,6 +21,9 @@ static char save_type;
 void parse_usb_string(const char *input) {
 	// Check for if the input is not NULL, if so: continue parsing the message
 	// Else: end function early
+	char config_msg[80];
+	char sensor_check[8];
+	uint8_t msg_length = 0;
 	if (input != NULL) {
 		for (uint8_t i = 0; input[i] != '\0'; i++) {
 			switch (check_level) {
@@ -37,14 +40,11 @@ void parse_usb_string(const char *input) {
 						set_sensor_messages = temp_num;
 						break;
 					case 'L':
-						;
-						char config_msg[72];
-						char sensor_check[8];
-						uint8_t msg_length = 0;
 						strcpy(sensor_check, "are");
 						if (!allow_sensor_messages())
 							strcat(sensor_check, " not");
-						msg_length = snprintf(config_msg, 72, "Current Config: Max debug level = %d & Sensor messages %s allowed!\r\n", max_debug_level(), sensor_check);
+						msg_length = sprintf(config_msg, "Current Config: Max debug level = %d & Sensor messages %s allowed!\r\n", max_debug_level(), sensor_check);
+                        msg_length = strlen(config_msg);
 						usb_app_write_string(config_msg, msg_length);
 						break;
 					}
