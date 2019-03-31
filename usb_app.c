@@ -1,11 +1,12 @@
 #include "mcc_generated_files/usb/usb.h"
 #include "usb_app.h"
+#include "user_config.h"
 #include <string.h>
 #include <stdlib.h>
 
 static uint8_t read_buffer[64];
 static uint8_t read_buffer_len = 0;
-static uint8_t write_buffer[64];
+static uint8_t write_buffer[128];
 static bool write_buffer_is_empty = true;
 
 void usb_app_heartbeat(void)
@@ -57,16 +58,8 @@ uint8_t debug_level_message(const can_msg_t *msg) {
     return (msg->sid % 5);
 }
 
-uint8_t max_debug_level() {
-    return 2;
-}
-
 bool is_sensor_data(const can_msg_t *msg) {
     return (msg->sid == 0xAA);
-}
-
-bool allow_sensor_messages() { 
-    return false;
 }
 
 uint8_t usb_app_report_can_msg(const can_msg_t *msg) {
