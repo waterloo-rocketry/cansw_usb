@@ -3,7 +3,7 @@
     <type>com.microchip.mplab.nbide.embedded.makeproject</type>
     <configuration>
         <data xmlns="http://www.netbeans.org/ns/make-project/1">
-            <name>usb_board</name>
+            <name>usb</name>
             <creation-uuid>d460b382-d3ae-48de-b32a-1037c0f2db2f</creation-uuid>
             <make-project-type>0</make-project-type>
             <c-extensions>c</c-extensions>
@@ -11,7 +11,6 @@
             <header-extensions>h</header-extensions>
             <asminc-extensions/>
             <sourceEncoding>ISO-8859-1</sourceEncoding>
-            <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>cjson</sourceRootElem>
                 <sourceRootElem>microjson</sourceRootElem>
@@ -26,6 +25,7 @@
             <formatting>
                 <project-formatting-style>false</project-formatting-style>
             </formatting>
+            <make-dep-projects/>
         </data>
     </configuration>
 </project>
