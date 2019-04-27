@@ -1,9 +1,21 @@
 #include "user_config.h"
+#include "canlib/can.h"
 #include <stdio.h>
 
 #define RED_TEXT   "\x1B[31m"
 #define GREEN_TEXT "\x1B[32m"
 #define RESET_TEXT "\x1b[0m"
+
+bool usb_app_write_string(char *buffer, uint8_t len)
+{
+    printf("%s", buffer);
+}
+
+can_msg_t last_can_msg;
+void mcp_can_send(const can_msg_t *msg)
+{
+    last_can_msg = *msg;
+}
 
 int main()
 {
@@ -49,7 +61,8 @@ int main()
     parse_usb_string("G");
     parse_usb_string("3");
     parse_usb_string(";");
-    if (max_debug_level() != 3) { // was "if (max_debug_level() != 2)" --> but should set debug level to 3
+    if (max_debug_level() !=
+        3) { // was "if (max_debug_level() != 2)" --> but should set debug level to 3
         printf("%sTEST FAILED%s: change debug level in three calls to parse_usb_string\n",
                RED_TEXT, RESET_TEXT);
         failed_tests++;
@@ -114,13 +127,93 @@ int main()
                RESET_TEXT);
     }
 
+    //TEST 9: Check that we can send a CAN message of length 0
+    total_tests++;
+    parse_usb_string("M7EF;");
+    if (last_can_msg.sid != 0x7EF || last_can_msg.data_len != 0) {
+        printf("%sTEST FAILED%s: send a CAN message of length 0\n", RED_TEXT,
+               RESET_TEXT);
+        failed_tests++;
+    } else {
+        printf("%sTEST PASSED%s: send a CAN message of length 0\n", GREEN_TEXT,
+               RESET_TEXT);
+    }
+
+    //TEST 10: Check that we can send a CAN message of length 8
+    total_tests++;
+    parse_usb_string("M777,01,02,03,04,05,06,07,08;");
+    if (last_can_msg.sid != 0x777 || last_can_msg.data_len != 8 ||
+        last_can_msg.data[0] != 1 ||
+        last_can_msg.data[1] != 2 ||
+        last_can_msg.data[2] != 3 ||
+        last_can_msg.data[3] != 4 ||
+        last_can_msg.data[4] != 5 ||
+        last_can_msg.data[5] != 6 ||
+        last_can_msg.data[6] != 7 ||
+        last_can_msg.data[7] != 8) {
+        printf("%sTEST FAILED%s: send a CAN message of length 8\n", RED_TEXT,
+               RESET_TEXT);
+        failed_tests++;
+    } else {
+        printf("%sTEST PASSED%s: send a CAN message of length 8\n", GREEN_TEXT,
+               RESET_TEXT);
+    }
+
+    //TEST 11: Check that we can send a CAN message with two nibble SID
+    total_tests++;
+    parse_usb_string("MFF,AA,BB;");
+    if (last_can_msg.sid != 0xFF || last_can_msg.data_len != 2 ||
+        last_can_msg.data[0] != 0xAA ||
+        last_can_msg.data[1] != 0xBB) {
+        printf("%sTEST FAILED%s: send a CAN message with two nibble SID\n", RED_TEXT,
+               RESET_TEXT);
+        failed_tests++;
+    } else {
+        printf("%sTEST PASSED%s: send a CAN message with two nibble SID\n", GREEN_TEXT,
+               RESET_TEXT);
+    }
+
+    //TEST 12: Check that we can send a CAN message with mixed case
+    total_tests++;
+    parse_usb_string("m7Ab,cD,Ef;");
+    if (last_can_msg.sid != 0x7AB || last_can_msg.data_len != 2 ||
+        last_can_msg.data[0] != 0xCD ||
+        last_can_msg.data[1] != 0xEF) {
+        printf("%sTEST FAILED%s: send a CAN message with mixed case\n", RED_TEXT,
+               RESET_TEXT);
+        failed_tests++;
+    } else {
+        printf("%sTEST PASSED%s: send a CAN message with mixed case\n", GREEN_TEXT,
+               RESET_TEXT);
+    }
+
+    //TEST 13: Check that we can send send a CAN message in multiple strings
+    total_tests++;
+    //the strint is "m11,D,f;", if you're wondering
+    parse_usb_string("m");
+    parse_usb_string("1");
+    parse_usb_string("1");
+    parse_usb_string("1");
+    parse_usb_string(",");
+    parse_usb_string("D");
+    parse_usb_string(",");
+    parse_usb_string("f");
+    parse_usb_string(";");
+    if (last_can_msg.sid != 0x111 || last_can_msg.data_len != 2 ||
+        last_can_msg.data[0] != 0xD ||
+        last_can_msg.data[1] != 0xF) {
+        printf("%sTEST FAILED%s: send a CAN message in multiple strings\n", RED_TEXT,
+               RESET_TEXT);
+        failed_tests++;
+    } else {
+        printf("%sTEST PASSED%s: send a CAN message in multiple strings\n", GREEN_TEXT,
+               RESET_TEXT);
+    }
+
     // Check for if the current config gets printed
     parse_usb_string("L;");
     parse_usb_string("L");
     parse_usb_string(";");
-
-
-
 
     //End of tests
     printf("END OF TESTS: %i tests total, %i tests %sfailed%s\n", total_tests,
