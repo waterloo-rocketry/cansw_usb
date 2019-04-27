@@ -57,10 +57,13 @@ void main(void)
 
     while (1)
     {
-        mcp_can_send(&msg_send);
-        BLINK_LEDS(10,10);
-
-        __delay_ms(100);
+        // if CAN module fires interrupt pin, receive a message
+        if(!PORTAbits.RA5) {
+            can_msg_t rcv;
+            if (mcp_can_receive(&rcv)) {
+                usb_app_report_can_msg(&rcv);
+            }
+        }
 
         // Add your application code
         usb_app_heartbeat();

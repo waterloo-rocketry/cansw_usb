@@ -63,15 +63,6 @@ void __interrupt() INTERRUPT_InterruptManager (void)
         } 
         else if (PIE1bits.TMR1IE == 1 && PIR1bits.TMR1IF == 1)
         {
-            if(counter++ == 100) {
-              can_msg_t msg;
-              msg.sid = 0x7AD;
-              msg.data_len = 2;
-              msg.data[0] = 0x99;
-              msg.data[1] = 0xCC;
-              usb_app_report_can_msg(&msg);
-              counter = 0;
-            }
             PIR1bits.TMR1IF = 0;
         }
         else
