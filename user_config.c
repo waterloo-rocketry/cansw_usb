@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "usb_app.h"
 #include "canlib/mcp2515/mcp_2515.h"
 
@@ -41,10 +42,9 @@ void parse_usb_string(const char *input)
     char char_to_check;
     if (input != NULL) {
         for (uint8_t i = 0; input[i] != '\0'; i++) {
-            if (input[i] >= 97)
-                char_to_check = input[i] - 32;
-            else
-                char_to_check = input[i];
+            //handle lowercase letters just like uppercase letters.
+            //That is, make them uppercase
+            char_to_check = toupper(input[i]);
             switch (check_level) {
 
                 // Case 3: check for if the sid and data being sent is valid (if the message is a CAN message)
