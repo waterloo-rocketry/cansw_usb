@@ -1,0 +1,112 @@
+# This file tracks message_types.h in canlib. I just copy and pasted cause I want a quick
+# and dirty CAN message decoder and not much more. 
+#                  byte 0      byte 1       byte 2         byte 3                  byte 4          byte 5          byte 6          byte 7
+ # GENERAL CMD:     TSTAMP_MS_H TSTAMP_MS_M  TSTAMP_MS_L    COMMAND_TYPE            None            None            None            None
+# VENT_VALVE_CMD:  TSTAMP_MS_H TSTAMP_MS_M  TSTAMP_MS_L    VENT_VALVE_STATE        None            None            None            None
+# INJ_VALVE_CMD:   TSTAMP_MS_H TSTAMP_MS_M  TSTAMP_MS_L    INJ_VALVE_STATE         None            None            None            None
+# DEBUG_MSG:       TSTAMP_MS_H TSTAMP_MS_M  TSTAMP_MS_L    DEBUG_LEVEL | LINUM_H   LINUM_L         MESSAGE_DEFINED MESSAGE_DEFINED MESSAGE_DEFINED
+# DEBUG_PRINTF:    ASCII       ASCII        ASCII          ASCII                   ASCII           ASCII           ASCII           ASCII
+# VENT_VALVE_STAT: TSTAMP_MS_H TSTAMP_MS_M  TSTAMP_MS_L    VENT_VALVE_STATE        CMD_VALVE_STATE None            None            None
+# INJ_VALVE_STAT:  TSTAMP_MS_H TSTAMP_MS_M  TSTAMP_MS_L    INJ_VALVE_STATE         CMD_VALVE_STATE None            None            None
+# BOARD_STAT:      TSTAMP_MS_H TSTAMP_MS_M  TSTAMP_MS_L    ERROR_CODE              BOARD_DEFINED   BOARD_DEFINED   BOARD_DEFINED   BOARD_DEFINED
+# SENSOR_ACC:      TSTAMP_MS_M TSTAMP_MS_L  VALUE_X_H      VALUE_X_L               VALUE_Y_H       VALUE_Y_L       VALUE_Z_H       VALUE_Z_L
+# SENSOR_GYRO:     TSTAMP_MS_M TSTAMP_MS_L  VALUE_X_H      VALUE_X_L               VALUE_Y_H       VALUE_Y_L       VALUE_Z_H       VALUE_Z_L
+# SENSOR_MAG:      TSTAMP_MS_M TSTAMP_MS_L  VALUE_X_H      VALUE_X_L               VALUE_Y_H       VALUE_Y_L       VALUE_Z_H       VALUE_Z_L
+# SENSOR_ANALOG:   TSTAMP_MS_M TSTAMP_MS_L  SENSOR_ID      VALUE_H                 VALUE_L         None            None            None
+# LEDS_ON:         None        None         None           None                    None            None            None            None
+# LEDS_OFF:        None        None         None           None                    None            None            None            None
+
+msg_type_hex = {
+    "GENERAL_CMD" : 0x060,
+    "VENT_VALVE_CMD" : 0x0C0,
+    "INJ_VALVE_CMD" : 0x120,
+
+    "DEBUG_MSG" : 0x180,
+    "DEBUG_PRINTF" : 0x1E0,
+
+    "VENT_VALVE_STATUS" : 0x460,
+    "INJ_VALVE_STATUS" : 0x4C0,
+    "GENERAL_BOARD_STATUS" : 0x520,
+
+    "SENSOR_ACC" : 0x580,
+    "SENSOR_GYRO" : 0x5E0,
+    "SENSOR_MAG" : 0x640,
+    "SENSOR_ANALOG" : 0x6A0,
+
+    "LEDS_ON" : 0x7E0,
+    "LEDS_OFF" : 0x7C0
+}
+msg_type_str = dict([[v,k] for k,v in msg_type_hex.items()])
+
+board_id_hex = {
+    "INJECTOR" : 0x01,
+    "INJECTOR_SPARE" : 0x02,
+    "LOGGER" : 0x03,
+    "LOGGER_SPARE" : 0x04,
+    "RADIO" : 0x05,
+    "RADIO_SPARE" : 0x06,
+    "SENSOR" : 0x07,
+    "SENSOR_SPARE" : 0x08,
+    "USB" : 0x09,
+    "USB_SPARE" : 0x0A,
+    "VENT" : 0x0B,
+    "VENT_SPARE" : 0x0C
+}
+board_id_str = dict([[v,k] for k,v in board_id_hex.items()])
+
+# GEN_CMD
+gen_cmd_hex = { "BUS_DOWN_WARNING" : 0 }
+gen_cmd_str = dict([[v,k] for k,v in gen_cmd_hex.items()])
+
+# VALVE_CMD/STATUS STATES
+valve_states_hex = {
+    "VALVE_OPEN" :  0,
+    "VALVE_CLOSED" : 1,
+    "VALVE_UNK" : 2,
+    "VALVE_ILLEGAL" : 3
+}
+valve_states_str = dict([[v,k] for k,v in valve_states_hex.items()])
+
+# BOARD GENERAL STATUS ERROR CODES
+# ERROR CODE (byte 3)         (byte4)             (byte 5)            (byte 6)            (byte 7)
+board_stat_hex = {
+    "E_NOMINAL" : 0,                   # x                x                   x                   x
+
+    "E_BUS_OVER_CURRENT" : 1,          # mA_high          mA_low              x                   x
+    "E_BUS_UNDER_VOLTAGE" : 2,         # mV_high          mV_low              x                   x
+    "E_BUS_OVER_VOLTAGE" : 3,          # mV_high          mV_low              x                   x
+
+    "E_BATT_UNDER_VOLTAGE" : 4,        # mV_high          mV_low              x                   x
+    "E_BATT_OVER_VOLTAGE" : 5,         # mV_high          mV_low              x                   x
+
+    "E_BOARD_FEARED_DEAD" : 6,         # board_id         x                   x                   x
+    "E_NO_CAN_TRAFFIC" : 7,            # time_s_high      time_s_low          x                   x
+    "E_MISSING_CRITICAL_BOARD" : 8,    # board_id         x                   x                   x
+    "E_RADIO_SIGNAL_LOST" : 9,         # time_s_high      time_s_low          x                   x
+
+    "E_VALVE_STATE" : 10,              # expected_state   valve_state         x                   x
+    "E_CANNOT_INIT_DACS" : 11,         # x                x                   x                   x
+    "E_VENT_POT_RANGE": 12,            # lim_upper (mV)   lim_lower (mV)      pot (mV)            x
+
+    "E_LOGGING" : 13,                  # x                x                   x                   x
+    "E_GPS" : 14,                      # x                x                   x                   x
+    "E_SENSOR" : 15,                   # sensor_id        x                   x                   x
+
+    "E_ILLEGAL_CAN_MSG" : 16,          # x                x                   x                   x
+    "E_SEGFAULT" : 17,                 # x                x                   x                   x
+    "E_UNHANDLED_INTERRUPT" : 18,      # x                x                   x                   x
+    "E_CODING_FUCKUP" : 19             # x                x                   x                   x
+}
+board_stat_str = dict([[v,k] for k,v in board_stat_hex.items()])
+
+# SENSOR_ID
+sensor_id_hex = {
+    "SENSOR_IMU1" : 0,
+    "SENSOR_IMU2" : 1,
+    "SENSOR_BARO" : 2,
+    "SENSOR_PRESSURE_OX" : 3,
+    "SENSOR_PRESSURE_CC" : 4,
+    "SENSOR_VENT_BATT" : 5
+}
+sensor_id_str = dict([[v,k] for k,v in sensor_id_hex.items()])
+
