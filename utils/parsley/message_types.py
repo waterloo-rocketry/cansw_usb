@@ -33,11 +33,11 @@ msg_type_hex = {
     "SENSOR_MAG" : 0x640,
     "SENSOR_ANALOG" : 0x6A0,
 
-    "GPS_TIMESTAMP" : 0x6C0
-    "GPS_LATITUDE" : 0x6E0
-    "GPS_LONGITUDE" : 0x700
-    "GPS_ALTITUDE" : 0x720
-    "GPS_INFO" : 0x740
+    "GPS_TIMESTAMP" : 0x6C0,
+    "GPS_LATITUDE" : 0x6E0,
+    "GPS_LONGITUDE" : 0x700,
+    "GPS_ALTITUDE" : 0x720,
+    "GPS_INFO" : 0x740,
 
     "LEDS_ON" : 0x7E0,
     "LEDS_OFF" : 0x7C0

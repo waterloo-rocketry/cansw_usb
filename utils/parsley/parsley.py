@@ -119,32 +119,32 @@ while True:
             utc_mins = msg_data[4]
             utc_secs = msg_data[5]
             utc_dsecs= msg_data[6]
-            print('hours=' + utc_hours + ' mins=' + utc_mins + ' seconds=' +utc_secs + '.' + utc_dsecs)
+            print(header + 't=' + str(timestamp) + 'ms ' + str(utc_hours)  + str(utc_mins) + str(utc_secs) + '.' + str(utc_dsecs))
 
         elif (msg_type == 'GPS_LATITUDE'):
             degrees = msg_data[3]
             minutes = msg_data[4]
             dminutes = msg_data[5]
             direction = msg_data[6]
-            print('Latitude=' + degrees + ' ' + minutes + '.' + dminutes + ' ' + direction)
+            print(header + 't=' + str(timestamp) + 'ms ' + str(degrees) + ' ' + str(minutes) + '.' + str(dminutes) + ' ' + str(direction))
 
         elif (msg_type == 'GPS_LONGITUDE'):
             degrees = msg_data[3]
             minutes = msg_data[4]
             dminutes = msg_data[5]
             direction = msg_data[6]
-            print('Longitude=' + degrees + ' ' + minutes + '.' + dminutes + ' ' + direction)
+            print(header + 't=' + str(timestamp) + 'ms ' + str(degrees) + ' ' + str(minutes) + '.' + str(dminutes) + ' ' + str(direction))
 
         elif (msg_type == 'GPS_ALTITUDE'):
             altitude = msg_data[3] << 8 | msg_data[4]
             daltitude = msg_data[5]
             unit = msg_data[6]
-            print('Altitude=' + altitude + '.' + daltitude + ' ' + unit)
+            print(header + 't=' + str(timestamp) + 'ms ' + str(altitude) + '.' + str(daltitude) + ' ' + str(unit))
         
         elif(msg_type == 'GPS_INFO'):
             numsat = msg_data[3]
             quality = msg_data[4]
-            print('Number of satellites=' + numsat + '. Quality=' + quality)
+            print(header + 't=' + str(timestamp) + 'ms #sat=' + str(numsat) + '. Quality=' + str(quality))
 
         elif (msg_type == 'LEDS_ON'):
             print(header)
