@@ -91,9 +91,10 @@ while True:
             elif board_stat == 'E_SENSOR':
                 print(super_header + ' ' + mt.sensor_id_str[msg_data[4]])
 
+            elif board_stat == 'E_GPS':
+                print(super_header + ' yay GPS')
             # all the stuff I don't really care about
             elif board_stat == 'E_LOGGING' \
-                or board_stat == 'E_GPS' \
                 or board_stat == 'E_ILLEGAL_CAN_MSG' \
                 or board_stat == 'E_SEGFAULT' \
                 or board_stat == 'E_UNHANDLED_INTERRUPT' \
@@ -112,6 +113,38 @@ while True:
             sensor_id = mt.sensor_id_str[msg_data[2]]
             value = msg_data[3] << 8 | msg_data[4]
             print(header + 't=' + str(timestamp) + 'ms ' + sensor_id + ' ' + str(value))
+
+        elif (msg_type == 'GPS_TIMESTAMP'):
+            utc_hours = msg_data[3]
+            utc_mins = msg_data[4]
+            utc_secs = msg_data[5]
+            utc_dsecs= msg_data[6]
+            print('hours=' + utc_hours + ' mins=' + utc_mins + ' seconds=' +utc_secs + '.' + utc_dsecs)
+
+        elif (msg_type == 'GPS_LATITUDE'):
+            degrees = msg_data[3]
+            minutes = msg_data[4]
+            dminutes = msg_data[5]
+            direction = msg_data[6]
+            print('Latitude=' + degrees + ' ' + minutes + '.' + dminutes + ' ' + direction)
+
+        elif (msg_type == 'GPS_LONGITUDE'):
+            degrees = msg_data[3]
+            minutes = msg_data[4]
+            dminutes = msg_data[5]
+            direction = msg_data[6]
+            print('Longitude=' + degrees + ' ' + minutes + '.' + dminutes + ' ' + direction)
+
+        elif (msg_type == 'GPS_ALTITUDE'):
+            altitude = msg_data[3] << 8 | msg_data[4]
+            daltitude = msg_data[5]
+            unit = msg_data[6]
+            print('Altitude=' + altitude + '.' + daltitude + ' ' + unit)
+        
+        elif(msg_type == 'GPS_INFO'):
+            numsat = msg_data[3]
+            quality = msg_data[4]
+            print('Number of satellites=' + numsat + '. Quality=' + quality)
 
         elif (msg_type == 'LEDS_ON'):
             print(header)

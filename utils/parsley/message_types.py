@@ -33,6 +33,12 @@ msg_type_hex = {
     "SENSOR_MAG" : 0x640,
     "SENSOR_ANALOG" : 0x6A0,
 
+    "GPS_TIMESTAMP" : 0x6C0
+    "GPS_LATITUDE" : 0x6E0
+    "GPS_LONGITUDE" : 0x700
+    "GPS_ALTITUDE" : 0x720
+    "GPS_INFO" : 0x740
+
     "LEDS_ON" : 0x7E0,
     "LEDS_OFF" : 0x7C0
 }
@@ -51,7 +57,9 @@ board_id_hex = {
     "USB" : 0x09,
     "USB_SPARE" : 0x0A,
     "VENT" : 0x0B,
-    "VENT_SPARE" : 0x0C
+    "VENT_SPARE" : 0x0C,
+    "GPS" : 0x0D,
+    "GPS_SPARE" : 0x0E
 }
 board_id_str = dict([[v,k] for k,v in board_id_hex.items()])
 
