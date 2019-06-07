@@ -91,16 +91,14 @@ while True:
             elif board_stat == 'E_SENSOR':
                 print(super_header + ' ' + mt.sensor_id_str[msg_data[4]])
 
-            elif board_stat == 'E_GPS':
-                print(super_header + ' yay GPS')
             # all the stuff I don't really care about
             elif board_stat == 'E_LOGGING' \
+                or board_stat == 'E_GPS' \
                 or board_stat == 'E_ILLEGAL_CAN_MSG' \
                 or board_stat == 'E_SEGFAULT' \
                 or board_stat == 'E_UNHANDLED_INTERRUPT' \
                 or board_stat == 'E_CODING_FUCKUP':
                 print(super_header)
-
 
         elif (msg_type == 'SENSOR_ACC' \
             or msg_type == 'SENSOR_GYRO' \
@@ -115,36 +113,46 @@ while True:
             print(header + 't=' + str(timestamp) + 'ms ' + sensor_id + ' ' + str(value))
 
         elif (msg_type == 'GPS_TIMESTAMP'):
+            timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
             utc_hours = msg_data[3]
             utc_mins = msg_data[4]
             utc_secs = msg_data[5]
             utc_dsecs= msg_data[6]
-            print(header + 't=' + str(timestamp) + 'ms ' + str(utc_hours)  + str(utc_mins) + str(utc_secs) + '.' + str(utc_dsecs))
+            print(header + 't=' + str(timestamp) + 'ms ' \
+                    + str(utc_hours) + 'hrs ' \
+                    + str(utc_mins) + 'mins ' \
+                    + str(utc_secs) + '.' + str(utc_dsecs) + 's')
 
         elif (msg_type == 'GPS_LATITUDE'):
+            timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
             degrees = msg_data[3]
             minutes = msg_data[4]
             dminutes = msg_data[5]
-            direction = msg_data[6]
-            print(header + 't=' + str(timestamp) + 'ms ' + str(degrees) + ' ' + str(minutes) + '.' + str(dminutes) + ' ' + str(direction))
+            direction = chr(msg_data[6])
+            print(header + 't=' + str(timestamp) + 'ms ' + str(degrees) + 'deg ' + str(minutes) + '.' \
+                  + str(dminutes) + 'mins ' + direction)
 
         elif (msg_type == 'GPS_LONGITUDE'):
+            timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
             degrees = msg_data[3]
             minutes = msg_data[4]
             dminutes = msg_data[5]
-            direction = msg_data[6]
-            print(header + 't=' + str(timestamp) + 'ms ' + str(degrees) + ' ' + str(minutes) + '.' + str(dminutes) + ' ' + str(direction))
+            direction = chr(msg_data[6])
+            print(header + 't=' + str(timestamp) + 'ms ' + str(degrees) + 'deg ' + str(minutes) + '.' \
+                  + str(dminutes) + 'mins ' + direction)
 
         elif (msg_type == 'GPS_ALTITUDE'):
+            timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
             altitude = msg_data[3] << 8 | msg_data[4]
             daltitude = msg_data[5]
-            unit = msg_data[6]
-            print(header + 't=' + str(timestamp) + 'ms ' + str(altitude) + '.' + str(daltitude) + ' ' + str(unit))
+            unit = chr(msg_data[6])
+            print(header + 't=' + str(timestamp) + 'ms ' + str(altitude) + '.' + str(daltitude) + ' ' + unit)
         
         elif(msg_type == 'GPS_INFO'):
+            timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
             numsat = msg_data[3]
             quality = msg_data[4]
-            print(header + 't=' + str(timestamp) + 'ms #sat=' + str(numsat) + '. Quality=' + str(quality))
+            print(header + 't=' + str(timestamp) + 'ms #SAT=' + str(numsat) + ' QUALITY=' + str(quality))
 
         elif (msg_type == 'LEDS_ON'):
             print(header)
@@ -155,6 +163,6 @@ while True:
         else:
             print('Message type not known, original message: ' + line)
 
-    except:
+    except Exception as e:
         print('Unable to parse message: ' + line)
         continue
