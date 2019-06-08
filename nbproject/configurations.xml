@@ -38,6 +38,10 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <logicalFolder name="f1" displayName="canlib" projectFiles="true">
+        <itemPath>canlib/can_common.c</itemPath>
+        <itemPath>canlib/mcp2515/mcp_2515.c</itemPath>
+      </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
                      projectFiles="true">
@@ -51,10 +55,9 @@
         <itemPath>mcc_generated_files/device_config.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
-      <itemPath>usb_app.c</itemPath>
-      <itemPath>canlib/mcp2515/mcp_2515.c</itemPath>
       <itemPath>spi.c</itemPath>
       <itemPath>user_config.c</itemPath>
+      <itemPath>usb_app.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -79,7 +82,7 @@
         <platformTool>PICkit3PlatformTool</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>2.00</languageToolchainVersion>
-        <platform>4</platform>
+        <platform>2</platform>
       </toolsSet>
       <packs>
         <pack name="PIC12-16F1xxx_DFP" vendor="Microchip" version="0.1.7"/>

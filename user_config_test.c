@@ -11,6 +11,11 @@ bool usb_app_write_string(char *buffer, uint8_t len)
     printf("%s", buffer);
 }
 
+void usb_app_report_can_msg(const can_msg_t *msg)
+{
+    printf("%x, %d\n", msg->sid, msg->data_len);
+}
+
 can_msg_t last_can_msg;
 void mcp_can_send(const can_msg_t *msg)
 {
@@ -126,6 +131,8 @@ int main()
         printf("%sTEST PASSED%s: set both values with 6 strings\n", GREEN_TEXT,
                RESET_TEXT);
     }
+
+
 
     //TEST 9: Check that we can send a CAN message of length 0
     total_tests++;
