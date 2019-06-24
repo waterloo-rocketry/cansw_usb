@@ -115,7 +115,8 @@ sensor_id_hex = {
     "SENSOR_BARO" : 2,
     "SENSOR_PRESSURE_OX" : 3,
     "SENSOR_PRESSURE_CC" : 4,
-    "SENSOR_VENT_BATT" : 5
+    "SENSOR_VENT_BATT" : 5,
+    "SENSOR_INJ_BATT" : 6
 }
 sensor_id_str = dict([[v,k] for k,v in sensor_id_hex.items()])
 
