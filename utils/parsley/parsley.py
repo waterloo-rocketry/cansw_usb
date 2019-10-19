@@ -58,7 +58,7 @@ def parse_board_status(msg_data):
 
     elif board_stat == 'E_BOARD_FEARED_DEAD' \
         or board_stat == 'E_MISSING_CRITICAL_BOARD':
-        parsed_str.append(board_id_str[msg_data[4]])
+        parsed_str.append(mt.board_id_str[msg_data[4]])
 
     elif board_stat == 'E_NO_CAN_TRAFFIC' \
         or board_stat == 'E_RADIO_SIGNAL_LOST':
@@ -89,7 +89,7 @@ def parse_gps_timestamp(msg_data):
     utc_mins = msg_data[4]
     utc_secs = msg_data[5]
     utc_dsecs= msg_data[6]
-    parsed_str = ['t=', str(timestamp) + 'ms ', \
+    parsed_str = ['t=', str(timestamp) + 'ms', \
             str(utc_hours) + 'hrs',  \
             str(utc_mins) + 'mins',  \
             str(utc_secs) + '.' + str(utc_dsecs) + 's']
