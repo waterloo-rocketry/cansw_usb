@@ -4,16 +4,24 @@
 #include "spi.h"
 #include "user_config.h"
 
-#define LED_1_OFF do{LATC4 = 1;}while(0)
-#define LED_2_OFF do{LATC5 = 1;}while(0)
-#define LED_1_ON  do{LATC4 = 0;}while(0)
-#define LED_2_ON  do{LATC5 = 0;}while(0)
+#define LED_1_OFF() (LATC4 = 1)
+#define LED_2_OFF() (LATC5 = 1)
+#define LED_1_ON()  (LATC4 = 0)
+#define LED_2_ON()  (LATC5 = 0)
 
-#define BLINK_LEDS(before_time_off, after_time_on) do{ __delay_ms(before_time_off); LED_1_ON; LED_2_ON; __delay_ms(after_time_on); LED_1_OFF; LED_2_OFF;}while(0)
+#define BLINK_LEDS(before_time_off, after_time_on) do{ __delay_ms(before_time_off); LED_1_ON(); LED_2_ON(); __delay_ms(after_time_on); LED_1_OFF(); LED_2_OFF();}while(0)
 
-/*
-                         Main application
- */
+static void visual_heartbeat(void) {
+    static bool led_on = false;
+    if (led_on) {
+        LED_1_OFF();
+        led_on = false;
+    } else {
+        LED_1_ON();
+        led_on = true;
+    }
+}
+
 void main(void)
 {
     // initialize the device
@@ -37,7 +45,7 @@ void main(void)
 
     BLINK_LEDS(50, 300);
 
-    while(!usb_app_write_string("Finished CAN setup\n\r", 20))
+    while(!usb_app_write_string("Finished CAN setup. Waiting for messages.\n\r", 20))
         usb_app_heartbeat();
 
     // When using interrupts, you need to set the Global and Peripheral Interrupt Enable bits
@@ -62,6 +70,7 @@ void main(void)
             can_msg_t rcv;
             if (mcp_can_receive(&rcv)) {
                 usb_app_report_can_msg(&rcv);
+                visual_heartbeat();
             }
         }
 
