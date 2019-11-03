@@ -45,7 +45,7 @@ void main(void)
 
     BLINK_LEDS(50, 300);
 
-    while(!usb_app_write_string("Finished CAN setup. Waiting for messages.\n\r", 20))
+    while(!usb_app_write_string("Finished CAN setup. Waiting for messages.\n\r", 42))
         usb_app_heartbeat();
 
     // When using interrupts, you need to set the Global and Peripheral Interrupt Enable bits
