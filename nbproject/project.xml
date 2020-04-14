@@ -11,10 +11,11 @@
             <header-extensions>h</header-extensions>
             <asminc-extensions/>
             <sourceEncoding>ISO-8859-1</sourceEncoding>
+            <make-dep-projects/>
             <sourceRootList>
                 <sourceRootElem>cjson</sourceRootElem>
                 <sourceRootElem>microjson</sourceRootElem>
-                <sourceRootElem>canlib/mcp2515</sourceRootElem>
+                <sourceRootElem>canlib</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>
@@ -25,7 +26,6 @@
             <formatting>
                 <project-formatting-style>false</project-formatting-style>
             </formatting>
-            <make-dep-projects/>
         </data>
     </configuration>
 </project>

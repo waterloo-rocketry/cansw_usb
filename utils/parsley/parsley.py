@@ -149,6 +149,10 @@ def parse_line(args, line):
 
     # USB format is the default
     else:
+        line = line.lstrip(' \0')
+        if (len(line) == 0) or (line[0] != '$'):
+            return
+        line = line[1:]
         msg_sid = int(line.split(':')[0], 16)
         msg_data_raw = line.split(':')[1].split(',')
         msg_data = [int(byte, 16) for byte in msg_data_raw]
