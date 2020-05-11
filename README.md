@@ -9,9 +9,10 @@ Used to make CAN messages more readable.
 
 Run in bash using command:
 
-```cat [COM PORT] | python -u parsley.py```
+```cat [Serial Port] | python -u parsley.py```
 
 where [COM PORT] is the port USB board is on.
+The ``-u`` argument tells python to run unbuffered, without it the output will not apear until the program stops running.
 
 Example Port:
 

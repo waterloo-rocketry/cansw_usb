@@ -16,7 +16,7 @@ typedef enum {
 static level check_level = CHECK_CHAR;
 static uint8_t set_debug_level = 0;
 static uint8_t temp_num = 0;
-static bool set_sensor_messages = false;
+static bool set_sensor_messages = true;
 static bool sid_sent = false;
 static char data_to_send[6];
 static uint8_t data_index = 2;
