@@ -40,10 +40,10 @@ msg_type_hex = {
     "GPS_ALTITUDE" : 0x720,
     "GPS_INFO" : 0x740,
 
+    "FILL_LVL": 0x780,
+
     "LEDS_ON" : 0x7E0,
     "LEDS_OFF" : 0x7C0,
-
-    "FILL_LVL": 0x780,
 }
 msg_type_str = {v: k for k, v in msg_type_hex.items()}
 
