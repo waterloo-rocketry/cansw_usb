@@ -100,8 +100,8 @@ def parse_gps_latitude(msg_data):
     timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
     degrees = msg_data[3]
     minutes = msg_data[4]
-    dminutes = msg_data[5]
-    direction = chr(msg_data[6])
+    dminutes = msg_data[5] << 8 | msg_data[6]
+    direction = chr(msg_data[7])
 
     parsed_str = ['t=', str(timestamp) + 'ms', str(degrees) + 'deg', str(minutes) + '.' \
           + str(dminutes) + 'mins', direction]
@@ -112,8 +112,8 @@ def parse_gps_longitude(msg_data):
     timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
     degrees = msg_data[3]
     minutes = msg_data[4]
-    dminutes = msg_data[5]
-    direction = chr(msg_data[6])
+    dminutes = msg_data[5] << 8 | msg_data[6]
+    direction = chr(msg_data[7])
     parsed_str = ['t=', str(timestamp) + 'ms', str(degrees) + 'deg', str(minutes) + '.' \
           + str(dminutes) + 'mins', direction]
     return parsed_str
