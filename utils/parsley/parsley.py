@@ -136,6 +136,14 @@ def parse_gps_info(msg_data):
     return parsed_str
 
 
+def parse_fill_lvl(msg_data):
+    timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
+    fill_lvl = msg_data[3]
+    direction = mt.fill_direction_str[msg_data[4]]
+    parsed_str = f"t={str(timestamp)}ms, lvl={fill_lvl}, direction={direction}"
+    return parsed_str
+
+
 def parse_line(args, line):
     if args.format == 'logger':
         msg_counter = int(line.split()[0], 16)
