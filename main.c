@@ -11,7 +11,8 @@
 
 #define BLINK_LEDS(before_time_off, after_time_on) do{ __delay_ms(before_time_off); LED_1_ON(); LED_2_ON(); __delay_ms(after_time_on); LED_1_OFF(); LED_2_OFF();}while(0)
 
-static void visual_heartbeat(void) {
+static void visual_heartbeat(void)
+{
     static bool led_on = false;
     if (led_on) {
         LED_1_OFF();
@@ -45,7 +46,7 @@ void main(void)
 
     BLINK_LEDS(50, 300);
 
-    while(!usb_app_write_string("Finished CAN setup. Waiting for messages.\n\r", 42))
+    while (!usb_app_write_string("Finished CAN setup. Waiting for messages.\n\r", 42))
         usb_app_heartbeat();
 
     // When using interrupts, you need to set the Global and Peripheral Interrupt Enable bits
@@ -63,10 +64,9 @@ void main(void)
     msg_send.sid = 0x7ef;
     msg_send.data_len = 2;
 
-    while (1)
-    {
+    while (1) {
         // if CAN module fires interrupt pin, receive a message
-        if(!PORTAbits.RA5) {
+        if (!PORTAbits.RA5) {
             can_msg_t rcv;
             if (mcp_can_receive(&rcv)) {
                 usb_app_report_can_msg(&rcv);
@@ -77,7 +77,7 @@ void main(void)
         // Add your application code
         usb_app_heartbeat();
 
-        if(usb_app_available_bytes() != 0) {
+        if (usb_app_available_bytes() != 0) {
             char input_string[64];
             usb_app_read_bytes(input_string, sizeof(input_string));
             parse_usb_string(input_string);
