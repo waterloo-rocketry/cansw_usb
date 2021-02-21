@@ -1,0 +1,57 @@
+### AStyle configuration options ###
+
+# Waterloo Rocketry does not enforce a team-wide style guide, but we do
+# ask that all codebases remain internally consistent. If you change
+# the options in this file, please rerun the formatter on all source
+# files using `./format.sh -a`
+
+# Documentation for AStyle and a description of what all options do
+# is at http://astyle.sourceforge.net/astyle.html.
+
+# Put opening braces on a new line after the expression, like this:
+#   if (x == 1)
+#   {
+style=kr
+indent=spaces=4
+
+# Indent case statements from parent switch
+indent-switches
+
+# In do-while loops, while appears on same line as the closing bracket:
+#   } while
+#   {
+attach-closing-while
+
+# a=2 becomes a = 2
+pad-oper
+
+# foo(a,b,c) becomes foo(a, b, c)
+pad-comma
+
+# if(x) becomes if (x). Same for while, for, etc.
+pad-header
+
+# When declaring pointers, do "char *c", not "char* c". This is to
+# reduce ambiguity. "char* a, b, c" looks like it's declaring 3 char
+# pointers, but it's not.
+align-pointer=name
+
+# "if (x) { y(); }" should be on 3 lines, not 1
+break-one-line-headers
+
+# 100 characters is usually enough for any reasonable codebase
+max-code-length=100
+
+# When splitting a large conditional across multiple lines, insert the
+# linebreak after the || or && rather than before it.
+break-after-logical
+
+# Don't excessively indent headers broken into multiple lines:
+#
+#   if (a < b || c > d)
+#
+#   becomes
+#
+#   if (a < b
+#       || c > d)
+min-conditional-indent=0
