@@ -8,7 +8,7 @@ The USB debug system for Waterloo Rocketry's CAN bus project.
 
 CAN messages can be sent to the CAN bus using the command:
 
-```echo -n mSSS,DD,DD,DD; > [Serial Port]```
+```echo -n "mSSS,DD,DD,DD;" > [Serial Port]```
 
 
 ## Parsley:
