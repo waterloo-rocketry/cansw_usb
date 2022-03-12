@@ -31,8 +31,9 @@ def parse_debug_printf(msg_data):
 
 def parse_valve_status(msg_data):
     timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
-    valve_state = mt.valve_states_str[msg_data[3]]
-    req_valve_state = mt.valve_states_str[msg_data[4]]
+    actuator_id = msg_data[3]
+    valve_state = mt.valve_states_str[msg_data[4]]
+    req_valve_state = mt.valve_states_str[msg_data[5]]
 
     parsed_str = ['t=', str(timestamp) + 'ms', 'REQ: ' + req_valve_state, \
             'ACTUAL: ' + valve_state]
