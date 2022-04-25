@@ -41,6 +41,7 @@ msg_type_hex = {
     "GPS_INFO" : 0x740,
 
     "FILL_LVL": 0x780,
+    "RADI_VALUE": 0x7A0,
 
     "LEDS_ON" : 0x7E0,
     "LEDS_OFF" : 0x7C0,
@@ -65,6 +66,7 @@ board_id_hex = {
     "GPS_SPARE" : 0x0E,
     "FILL": 0x0F,
     "FILL_SPARE": 0x010,
+    "PICAM": 0x015
 }
 board_id_str = {v: k for k, v in board_id_hex.items()}
 
