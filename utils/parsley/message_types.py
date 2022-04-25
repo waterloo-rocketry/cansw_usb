@@ -66,7 +66,14 @@ board_id_hex = {
     "GPS_SPARE" : 0x0E,
     "FILL": 0x0F,
     "FILL_SPARE": 0x010,
-    "PICAM": 0x015
+    "BOARD_ID_ARMING"            : 0x11,
+    "BOARD_ID_ARMING_SPARE"      : 0x12,
+    "BOARD_ID_PAPA"              : 0x13,
+    "BOARD_ID_PAPA_SPARE"        : 0x14,
+    "BOARD_ID_ROCKET_PI"         : 0X15,
+    "BOARD_ID_ROCKET_PI_2"       : 0X16,
+    "BOARD_ID_ROCKET_PI_SPARE"   : 0X17,
+    "BOARD_ID_ROCKET_PI_2_SPARE" : 0X18,
 }
 board_id_str = {v: k for k, v in board_id_hex.items()}
 
