@@ -1,7 +1,7 @@
 # This file tracks message_types.h in canlib. I just copy and pasted cause I want a quick
-# and dirty CAN message decoder and not much more. 
+# and dirty CAN message decoder and not much more.
 #                  byte 0      byte 1       byte 2         byte 3                  byte 4          byte 5          byte 6          byte 7
- # GENERAL CMD:     TSTAMP_MS_H TSTAMP_MS_M  TSTAMP_MS_L    COMMAND_TYPE            None            None            None            None
+ # GENERAL CMD:    TSTAMP_MS_H TSTAMP_MS_M  TSTAMP_MS_L    COMMAND_TYPE            None            None            None            None
 # VENT_VALVE_CMD:  TSTAMP_MS_H TSTAMP_MS_M  TSTAMP_MS_L    VENT_VALVE_STATE        None            None            None            None
 # INJ_VALVE_CMD:   TSTAMP_MS_H TSTAMP_MS_M  TSTAMP_MS_L    INJ_VALVE_STATE         None            None            None            None
 # DEBUG_MSG:       TSTAMP_MS_H TSTAMP_MS_M  TSTAMP_MS_L    DEBUG_LEVEL | LINUM_H   LINUM_L         MESSAGE_DEFINED MESSAGE_DEFINED MESSAGE_DEFINED
@@ -15,6 +15,7 @@
 # SENSOR_ANALOG:   TSTAMP_MS_M TSTAMP_MS_L  SENSOR_ID      VALUE_H                 VALUE_L         None            None            None
 # LEDS_ON:         None        None         None           None                    None            None            None            None
 # LEDS_OFF:        None        None         None           None                    None            None            None            None
+# FILL_LVL:        TSTAMP_MS_H TSTAMP_MS_M  TSTAMP_MS_L    FILL_LEVEL              DIRECTION       None            None            None
 
 msg_type_hex = {
     "GENERAL_CMD" : 0x060,
@@ -39,10 +40,13 @@ msg_type_hex = {
     "GPS_ALTITUDE" : 0x720,
     "GPS_INFO" : 0x740,
 
+    "FILL_LVL": 0x780,
+    "RADI_VALUE": 0x7A0,
+
     "LEDS_ON" : 0x7E0,
-    "LEDS_OFF" : 0x7C0
+    "LEDS_OFF" : 0x7C0,
 }
-msg_type_str = dict([[v,k] for k,v in msg_type_hex.items()])
+msg_type_str = {v: k for k, v in msg_type_hex.items()}
 
 board_id_hex = {
     "DUMMY" : 0x00,
@@ -59,13 +63,23 @@ board_id_hex = {
     "VENT" : 0x0B,
     "VENT_SPARE" : 0x0C,
     "GPS" : 0x0D,
-    "GPS_SPARE" : 0x0E
+    "GPS_SPARE" : 0x0E,
+    "FILL": 0x0F,
+    "FILL_SPARE": 0x010,
+    "BOARD_ID_ARMING"            : 0x11,
+    "BOARD_ID_ARMING_SPARE"      : 0x12,
+    "BOARD_ID_PAPA"              : 0x13,
+    "BOARD_ID_PAPA_SPARE"        : 0x14,
+    "BOARD_ID_ROCKET_PI"         : 0X15,
+    "BOARD_ID_ROCKET_PI_2"       : 0X16,
+    "BOARD_ID_ROCKET_PI_SPARE"   : 0X17,
+    "BOARD_ID_ROCKET_PI_2_SPARE" : 0X18,
 }
-board_id_str = dict([[v,k] for k,v in board_id_hex.items()])
+board_id_str = {v: k for k, v in board_id_hex.items()}
 
 # GEN_CMD
 gen_cmd_hex = { "BUS_DOWN_WARNING" : 0 }
-gen_cmd_str = dict([[v,k] for k,v in gen_cmd_hex.items()])
+gen_cmd_str = {v: k for k, v in gen_cmd_hex.items()}
 
 # VALVE_CMD/STATUS STATES
 valve_states_hex = {
@@ -74,7 +88,7 @@ valve_states_hex = {
     "VALVE_UNK" : 2,
     "VALVE_ILLEGAL" : 3
 }
-valve_states_str = dict([[v,k] for k,v in valve_states_hex.items()])
+valve_states_str = {v: k for k, v in valve_states_hex.items()}
 
 # BOARD GENERAL STATUS ERROR CODES
 # ERROR CODE (byte 3)         (byte4)             (byte 5)            (byte 6)            (byte 7)
@@ -106,7 +120,7 @@ board_stat_hex = {
     "E_UNHANDLED_INTERRUPT" : 18,      # x                x                   x                   x
     "E_CODING_FUCKUP" : 19             # x                x                   x                   x
 }
-board_stat_str = dict([[v,k] for k,v in board_stat_hex.items()])
+board_stat_str = {v: k for k, v in board_stat_hex.items()}
 
 # SENSOR_ID
 sensor_id_hex = {
@@ -118,5 +132,10 @@ sensor_id_hex = {
     "SENSOR_VENT_BATT" : 5,
     "SENSOR_INJ_BATT" : 6
 }
-sensor_id_str = dict([[v,k] for k,v in sensor_id_hex.items()])
+sensor_id_str = {v: k for k, v in sensor_id_hex.items()}
 
+fill_direction_hex = {
+    "FILLING": 0,
+    "EMPTYING": 1,
+}
+fill_direction_str = {v: k for k, v in fill_direction_hex.items()}

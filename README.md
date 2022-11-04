@@ -15,6 +15,7 @@ CAN messages can be sent to the CAN bus using the command:
 
 ```echo -n "mSSS,DD,DD,DD;" > [Serial Port]```
 
+-the "m" at the beginning of the string is a literal character m.
 ``SSS`` is the 11 bit message ID, and ``DD`` is one byte of data. Up to 8 bytes
 of data can be sent.
 

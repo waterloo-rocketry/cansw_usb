@@ -57,7 +57,7 @@ bool compare_can_msg(const can_msg_t *msg1, const can_msg_t *msg2)
 uint8_t usb_app_report_can_msg(const can_msg_t *msg)
 {
     //length for 1 byte ("XX,") * number of bytes-1 + extras and last byte
-    char temp_buffer[3 * 7 + 10]; 
+    char temp_buffer[3 * 7 + 10];
     static can_msg_t last_received_message;
     const char hex_lookup_table[16] = {
         '0', '1', '2', '3',

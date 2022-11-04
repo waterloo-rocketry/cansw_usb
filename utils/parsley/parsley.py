@@ -31,8 +31,9 @@ def parse_debug_printf(msg_data):
 
 def parse_valve_status(msg_data):
     timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
-    valve_state = mt.valve_states_str[msg_data[3]]
-    req_valve_state = mt.valve_states_str[msg_data[4]]
+    actuator_id = mt.board_id_str[msg_data[3]]
+    valve_state = mt.valve_states_str[msg_data[4]]
+    req_valve_state = mt.valve_states_str[msg_data[5]]
 
     parsed_str = ['t=', str(timestamp) + 'ms', 'REQ: ' + req_valve_state, \
             'ACTUAL: ' + valve_state]
@@ -100,8 +101,8 @@ def parse_gps_latitude(msg_data):
     timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
     degrees = msg_data[3]
     minutes = msg_data[4]
-    dminutes = msg_data[5]
-    direction = chr(msg_data[6])
+    dminutes = msg_data[5] << 8 | msg_data[6]
+    direction = chr(msg_data[7])
 
     parsed_str = ['t=', str(timestamp) + 'ms', str(degrees) + 'deg', str(minutes) + '.' \
           + str(dminutes) + 'mins', direction]
@@ -112,8 +113,8 @@ def parse_gps_longitude(msg_data):
     timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
     degrees = msg_data[3]
     minutes = msg_data[4]
-    dminutes = msg_data[5]
-    direction = chr(msg_data[6])
+    dminutes = msg_data[5] << 8 | msg_data[6]
+    direction = chr(msg_data[7])
     parsed_str = ['t=', str(timestamp) + 'ms', str(degrees) + 'deg', str(minutes) + '.' \
           + str(dminutes) + 'mins', direction]
     return parsed_str
@@ -135,6 +136,23 @@ def parse_gps_info(msg_data):
     parsed_str = ['t=', str(timestamp) + 'ms', '#SAT=' + str(numsat), 'QUALITY=' + str(quality)]
     return parsed_str
 
+
+def parse_fill_lvl(msg_data):
+    timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
+    fill_lvl = msg_data[3]
+    direction = mt.fill_direction_str[msg_data[4]]
+    parsed_str = ['t=', str(timestamp) + 'ms', 'LEVEL=' + str(fill_lvl), 'DIRECTION=' + str(direction)]
+    return parsed_str
+
+def parse_radi_value(msg_data):
+    #print("radiation message")
+    timestamp = msg_data[0] << 16 | msg_data[1] << 8 | msg_data[2]
+    sensor_id = mt.board_id_str[msg_data[3]]
+    value = msg_data[4] << 8 | msg_data[5]
+
+    parsed_str = ['t=', str(timestamp) + 'ms', 'sensor:', sensor_id, str(value)]
+
+    return parsed_str
 
 def parse_line(args, line):
     if args.format == 'logger':
@@ -206,9 +224,15 @@ def parse_line(args, line):
 
     elif msg_type == 'GPS_ALTITUDE':
         parsed_data.extend(parse_gps_altitude(msg_data))
-   
+
     elif msg_type == 'GPS_INFO':
         parsed_data.extend(parse_gps_info(msg_data))
+
+    elif msg_type == 'FILL_LVL':
+        parsed_data.extend(parse_fill_lvl(msg_data))
+
+    elif msg_type == 'RADI_VALUE':
+        parsed_data.extend(parse_radi_value(msg_data))
 
     else:
         parsed_data.extend('Message type not known, original message: ' + line)
@@ -241,7 +265,7 @@ if __name__ == '__main__':
         if not line:
             break
 
-        # treat repeated messages in the same way as USB 
+        # treat repeated messages in the same way as USB
         if line.strip() == '.':
             print('.')
             continue
