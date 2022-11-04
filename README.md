@@ -10,6 +10,10 @@ CAN messages can be sent to the CAN bus using the command:
 
 ```echo -n "mSSS,DD,DD,DD;" > [Serial Port]```
 
+-the "m" at the beginning of the string is a literal character m
+-SSS is the message command type (in hex)
+-DD are the data fields defined in canlib (in hex)
+
 
 ## Parsley:
 
