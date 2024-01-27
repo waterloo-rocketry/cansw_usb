@@ -34,7 +34,7 @@ void main(void)
 
     //initialize the CAN module
     can_timing_t can_setup;
-    can_setup.brp = 11;
+    can_setup.brp = 1;
     can_setup.sjw = 3;
     can_setup.btlmode = 0x01;
     can_setup.sam = 0;
