@@ -33,6 +33,7 @@ void main(void)
     spi_init();
 
     //initialize the CAN module
+    /*clkout (to mcp) = 48/4 = 12Mhz*/
     can_timing_t can_setup;
     can_setup.brp = 1;
     can_setup.sjw = 3;

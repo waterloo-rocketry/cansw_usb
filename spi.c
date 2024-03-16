@@ -15,7 +15,7 @@ void spi_init()
     ANSELC &= ~(0x07);
 
     SSPSTAT = 0b10000000;
-    SSPCON1 = 0b00110010;
+    SSPCON1 = 0b00110000;/*SPI SPEED(last 4 bits)0000 = FOSC/4 = 48/4 = 12Mhz */
     SSPCON2 = 0b00000000;
 
 }

@@ -71,8 +71,9 @@ void TIMER_Initialize(void)
 }
 void OSCILLATOR_Initialize(void)
 {
-    // SCS FOSC; SPLLMULT 3xPLL; SPLLEN disabled; IRCF 16MHz_HF; 
-    OSCCON = 0x7C;
+    /*should run at 48Mhz (16Mhz * 3xPLL), required for high speed USB*/
+    // SCS FOSC; SPLLMULT 3xPLL; SPLLEN enabled; IRCF 16MHz_HF; 
+    OSCCON = 0xFC;
     // TUN 0; 
     OSCTUNE = 0x00;
     // ACTSRC SOSC; ACTUD enabled; ACTEN disabled; 
@@ -80,7 +81,7 @@ void OSCILLATOR_Initialize(void)
     // SBOREN disabled; BORFS disabled; 
     BORCON = 0x00;
     // Wait for PLL to stabilize
-    while(PLLRDY == 0)
+    while(PLLRDY == 0 && HFIOFS ==0)
     {
     }
 }
