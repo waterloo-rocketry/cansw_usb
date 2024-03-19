@@ -71,8 +71,8 @@ void TIMER_Initialize(void)
 }
 void OSCILLATOR_Initialize(void)
 {
-    // SCS FOSC; SPLLMULT 4xPLL; SPLLEN enabled; IRCF 16MHz_HF; 
-    OSCCON = 0xBC;
+    // SCS FOSC; SPLLMULT 3xPLL; SPLLEN enabled; IRCF 16MHz_HF;
+    OSCCON = 0xFC;
     // TUN 0; 
     OSCTUNE = 0x00;
     // ACTSRC SOSC; ACTUD enabled; ACTEN disabled; 
