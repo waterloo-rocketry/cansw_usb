@@ -15,7 +15,7 @@ void spi_init()
     ANSELC &= ~(0x07);
 
     SSPSTAT = 0b10000000;
-    SSPCON1 = 0b00110010;
+    SSPCON1 = 0b00110000;
     SSPCON2 = 0b00000000;
 
 }
