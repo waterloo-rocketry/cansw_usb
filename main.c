@@ -66,12 +66,6 @@ void main(void) {
     // Enable the Peripheral Interrupts
     INTERRUPT_PeripheralInterruptEnable();
 
-    can_msg_t msg_send, msg_recv;
-    msg_send.data[0] = 0xAA;
-    msg_send.data[1] = 0xCC;
-    msg_send.sid = 0x7ef;
-    msg_send.data_len = 2;
-
     while (1) {
         // if CAN module fires interrupt pin, receive a message
         if (!PORTAbits.RA5) {

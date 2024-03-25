@@ -7,8 +7,9 @@
 #define GREEN_TEXT "\x1B[32m"
 #define RESET_TEXT "\x1b[0m"
 
-bool usb_app_write_string(char *buffer, uint8_t len) {
+bool usb_app_write_string(const char *buffer, uint8_t len) {
     printf("%s", buffer);
+    return true;
 }
 
 void usb_app_report_can_msg(const can_msg_t *msg) {
@@ -203,7 +204,7 @@ int main() {
     parse_usb_string(";");
 
     // End of tests
-    printf("END OF TESTS: %i tests total, %i tests %sfailed%s\n",
+    printf("END OF TESTS: %u tests total, %u tests %sfailed%s\n",
            total_tests,
            failed_tests,
            failed_tests ? RED_TEXT : GREEN_TEXT,

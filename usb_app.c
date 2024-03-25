@@ -119,21 +119,22 @@ uint8_t usb_app_available_bytes(void) {
     return read_buffer_len;
 }
 
-uint8_t usb_app_read_bytes(char *buffer, uint8_t len) {
+void usb_app_read_bytes(char *buffer, uint8_t len) {
     if (read_buffer_len == 0) {
         *buffer = '\0';
-        return 0;
+        return;
     }
     if (len <= read_buffer_len) {
         *buffer = '\0';
-        return 0;
+        return;
     }
     memcpy(buffer, read_buffer, read_buffer_len);
     buffer[read_buffer_len] = '\0';
     read_buffer_len = 0;
+    return;
 }
 
-bool usb_app_write_string(char *buffer, uint8_t len) {
+bool usb_app_write_string(const char *buffer, uint8_t len) {
     if ((false == write_buffer_is_empty) || (len >= sizeof(write_buffer))) {
         return false;
     }
