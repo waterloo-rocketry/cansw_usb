@@ -1,8 +1,8 @@
 #ifndef USER_CONFIG_H_
 #define USER_CONFIG_H_
 
-#include <stdint.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 // Call this function with the characters received over USB.
 void parse_usb_string(const char *input);

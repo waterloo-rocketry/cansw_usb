@@ -1,18 +1,26 @@
-#include "mcc_generated_files/mcc.h"
-#include "usb_app.h"
 #include "canlib/can.h"
+
+#include "mcc_generated_files/mcc.h"
 #include "spi.h"
+#include "usb_app.h"
 #include "user_config.h"
 
 #define LED_1_OFF() (LATC4 = 1)
 #define LED_2_OFF() (LATC5 = 1)
-#define LED_1_ON()  (LATC4 = 0)
-#define LED_2_ON()  (LATC5 = 0)
+#define LED_1_ON() (LATC4 = 0)
+#define LED_2_ON() (LATC5 = 0)
 
-#define BLINK_LEDS(before_time_off, after_time_on) do{ __delay_ms(before_time_off); LED_1_ON(); LED_2_ON(); __delay_ms(after_time_on); LED_1_OFF(); LED_2_OFF();}while(0)
+#define BLINK_LEDS(before_time_off, after_time_on)                                                 \
+    do {                                                                                           \
+        __delay_ms(before_time_off);                                                               \
+        LED_1_ON();                                                                                \
+        LED_2_ON();                                                                                \
+        __delay_ms(after_time_on);                                                                 \
+        LED_1_OFF();                                                                               \
+        LED_2_OFF();                                                                               \
+    } while (0)
 
-static void visual_heartbeat(void)
-{
+static void visual_heartbeat(void) {
     static bool led_on = false;
     if (led_on) {
         LED_1_OFF();
@@ -23,8 +31,7 @@ static void visual_heartbeat(void)
     }
 }
 
-void main(void)
-{
+void main(void) {
     // initialize the device
     SYSTEM_Initialize();
 
@@ -32,7 +39,7 @@ void main(void)
 
     spi_init();
 
-    //initialize the CAN module
+    // initialize the CAN module
     can_timing_t can_setup;
     can_setup.brp = 1;
     can_setup.sjw = 3;
@@ -46,8 +53,9 @@ void main(void)
 
     BLINK_LEDS(50, 300);
 
-    while (!usb_app_write_string("Finished CAN setup. Waiting for messages.\n\r", 42))
+    while (!usb_app_write_string("Finished CAN setup. Waiting for messages.\n\r", 42)) {
         usb_app_heartbeat();
+    }
 
     // When using interrupts, you need to set the Global and Peripheral Interrupt Enable bits
     // Use the following macros to:
@@ -84,6 +92,3 @@ void main(void)
         }
     }
 }
-/**
- End of File
-*/
