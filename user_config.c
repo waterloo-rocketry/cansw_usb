@@ -1,10 +1,12 @@
-#include "user_config.h"
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#include "usb_app.h"
+
 #include "canlib/mcp2515/mcp_2515.h"
+
+#include "usb_app.h"
+#include "user_config.h"
 
 typedef enum {
     CHECK_CHAR,
@@ -22,13 +24,13 @@ static char data_to_send[6];
 static uint8_t data_index = 2;
 static uint8_t num_data_sent = 0;
 
-
-// save_type used to save what kind of message type is being checked ('G' for debug level, 'S' for sensor message, or 'L' for config)
+// save_type used to save what kind of message type is being checked ('G' for debug level, 'S' for
+// sensor message, or 'L' for config)
 static char save_type;
 
-// function takes in a message and parses it to see if max_debug_level() or allow_sensor_messages() needs to be changed
-void parse_usb_string(const char *input)
-{
+// function takes in a message and parses it to see if max_debug_level() or allow_sensor_messages()
+// needs to be changed
+void parse_usb_string(const char *input) {
     // Check for if the input is not NULL, if so: continue parsing the message
     // Else: end function early
 
@@ -42,12 +44,13 @@ void parse_usb_string(const char *input)
     char char_to_check;
     if (input != NULL) {
         for (uint8_t i = 0; input[i] != '\0'; i++) {
-            //handle lowercase letters just like uppercase letters.
-            //That is, make them uppercase
+            // handle lowercase letters just like uppercase letters.
+            // That is, make them uppercase
             char_to_check = toupper(input[i]);
             switch (check_level) {
 
-                // Case 3: check for if the sid and data being sent is valid (if the message is a CAN message)
+                // Case 3: check for if the sid and data being sent is valid (if the message is a
+                // CAN message)
                 // --> sid contains 1-3 nibbles
                 // --> each data value contains 1-2 nibbles
                 case CHECK_DATA:
@@ -63,10 +66,11 @@ void parse_usb_string(const char *input)
                         }
                         data_to_send[2] = 0;
                         data_to_send[3] = 0;
-                        if (char_to_check == ';')
+                        if (char_to_check == ';') {
                             check_level = CHECK_SEMI_COLON;
-                        else
+                        } else {
                             break;
+                        }
 
                     } else if (!sid_sent && data_index < 5) {
                         data_to_send[data_index] = char_to_check;
@@ -92,12 +96,14 @@ void parse_usb_string(const char *input)
                                 break;
                             case 'L':
                                 strcpy(sensor_check, "are");
-                                if (!allow_sensor_messages())
+                                if (!allow_sensor_messages()) {
                                     strcat(sensor_check, " not");
-                                msg_length =
-                                    sprintf(config_msg,
-                                            "Current Config: Max debug level = %d & Sensor messages %s allowed!\r\n",
-                                            max_debug_level(), sensor_check);
+                                }
+                                msg_length = sprintf(config_msg,
+                                                     "Current Config: Max debug level = %d & "
+                                                     "Sensor messages %s allowed!\r\n",
+                                                     max_debug_level(),
+                                                     sensor_check);
                                 msg_length = strlen(config_msg);
                                 usb_app_write_string(config_msg, msg_length);
                                 break;
@@ -114,15 +120,17 @@ void parse_usb_string(const char *input)
                     } // @suppress("No break at end of case")
 
                 // Case 1: second check for if there has been a valid message sent
-                // --> if parse_usb_string has received a valid number with respect to the char previously received
+                // --> if parse_usb_string has received a valid number with respect to the char
+                // previously received
                 case CHECK_NUM:
                     temp_num = char_to_check - '0';
-                    if ((temp_num >= 0 && temp_num <= 5 && save_type == 'G')
-                        || ((temp_num == 0 || temp_num == 1) && save_type == 'S')) {
+                    if ((temp_num >= 0 && temp_num <= 5 && save_type == 'G') ||
+                        ((temp_num == 0 || temp_num == 1) && save_type == 'S')) {
                         check_level = CHECK_SEMI_COLON;
                         break;
-                    } else
+                    } else {
                         check_level = CHECK_CHAR; // @suppress("No break at end of case")
+                    }
 
                 // Case 0: new instance of checking for valid message sent
                 // --> if parse_usb_string has received a char (either 'S' or 'G')
@@ -151,14 +159,12 @@ void parse_usb_string(const char *input)
 }
 
 // returns the max debug level
-uint8_t max_debug_level()
-{
+uint8_t max_debug_level() {
     return set_debug_level;
 }
 
 // returns if sensor messages are allowed to be printed
 // 1 = true (print) and 0 = false (don't print)
-bool allow_sensor_messages()
-{
+bool allow_sensor_messages() {
     return set_sensor_messages;
 }
