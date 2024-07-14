@@ -48,11 +48,11 @@ void parse_usb_string(const char *input) {
             // handle lowercase letters just like uppercase letters.
             // That is, make them uppercase
             char_to_check = toupper(input[i]);
-			if(char_to_check == 'X'){
-				LATC4 = 1;
-			}else if(char_to_check == 'Y'){
-				LATC4 = 0;
-			}
+            if (char_to_check == 'X') {
+                LATC4 = 1;
+            } else if (char_to_check == 'Y') {
+                LATC4 = 0;
+            }
             switch (check_level) {
 
                 // Case 3: check for if the sid and data being sent is valid (if the message is a

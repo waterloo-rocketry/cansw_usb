@@ -55,6 +55,8 @@ void main(void) {
 
     BLINK_LEDS(50, 100);
 
+	TRISC4 = 0;
+
     spi_init();
 
     // initialize the CAN module
@@ -90,7 +92,7 @@ void main(void) {
             can_msg_t rcv;
             if (mcp_can_receive(&rcv)) {
                 usb_app_report_can_msg(&rcv);
-                //visual_heartbeat();
+                // visual_heartbeat();
             }
         }
 
