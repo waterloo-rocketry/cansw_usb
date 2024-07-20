@@ -55,7 +55,10 @@ void main(void) {
 
     BLINK_LEDS(50, 100);
 
+#ifdef DAQ_CAN_SUPPORT
+    LATC4 = 0; // Rocket Power off by default
 	TRISC4 = 0;
+#endif
 
     spi_init();
 
