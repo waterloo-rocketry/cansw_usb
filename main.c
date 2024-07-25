@@ -10,6 +10,15 @@
 #define LED_1_ON() (LATC4 = 0)
 #define LED_2_ON() (LATC5 = 0)
 
+#ifdef DAQ_CAN_SUPPORT
+#define BLINK_LEDS(before_time_off, after_time_on)                                                 \
+    do {                                                                                           \
+        __delay_ms(before_time_off);                                                               \
+        LED_2_ON();                                                                                \
+        __delay_ms(after_time_on);                                                                 \
+        LED_2_OFF();                                                                               \
+    } while (0)
+#else
 #define BLINK_LEDS(before_time_off, after_time_on)                                                 \
     do {                                                                                           \
         __delay_ms(before_time_off);                                                               \
@@ -19,14 +28,23 @@
         LED_1_OFF();                                                                               \
         LED_2_OFF();                                                                               \
     } while (0)
+#endif
 
 static void visual_heartbeat(void) {
     static bool led_on = false;
     if (led_on) {
+#ifdef DAQ_CAN_SUPPORT
+        LED_2_OFF();
+#else
         LED_1_OFF();
+#endif
         led_on = false;
     } else {
+#ifdef DAQ_CAN_SUPPORT
+        LED_2_ON();
+#else
         LED_1_ON();
+#endif
         led_on = true;
     }
 }
@@ -36,6 +54,11 @@ void main(void) {
     SYSTEM_Initialize();
 
     BLINK_LEDS(50, 100);
+
+#ifdef DAQ_CAN_SUPPORT
+    LATC4 = 0; // Rocket Power off by default
+	TRISC4 = 0;
+#endif
 
     spi_init();
 
@@ -72,7 +95,7 @@ void main(void) {
             can_msg_t rcv;
             if (mcp_can_receive(&rcv)) {
                 usb_app_report_can_msg(&rcv);
-                visual_heartbeat();
+                // visual_heartbeat();
             }
         }
 

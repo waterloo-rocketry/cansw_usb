@@ -2,8 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <xc.h>
 
 #include "canlib/mcp2515/mcp_2515.h"
+#include "canlib/can_common.h"
 
 #include "usb_app.h"
 #include "user_config.h"
@@ -109,6 +111,16 @@ void parse_usb_string(const char *input) {
                                 break;
                             case 'M':
                                 msg.data_len = num_data_sent;
+
+#ifdef DAQ_CAN_SUPPORT
+                                // Check if income message is a rocket power relay actuator message
+                                int actuator_id = get_actuator_id(&msg);
+
+                                if (actuator_id == ACTUATOR_ROCKET_POWER) {
+                                    LATC4 = (get_req_actuator_state(&msg) == ACTUATOR_ON);
+                                }
+#endif
+
                                 mcp_can_send(&msg);
                                 num_data_sent = 0;
                                 sid_sent = false;
