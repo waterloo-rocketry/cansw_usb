@@ -37,7 +37,7 @@ void usb_app_heartbeat(void) {
 
 uint8_t usb_app_report_can_msg(const can_msg_t *msg) {
     // length for 1 byte ("XX,") * number of bytes-1 + extras and last byte
-    char temp_buffer[3 * 7 + 10];
+    char temp_buffer[3 * 7 + 15];
     const char hex_lookup_table[16] = {
         '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 
@@ -66,20 +66,21 @@ uint8_t usb_app_report_can_msg(const can_msg_t *msg) {
     // formatting output The last character is used to end the string made
     // from temp_buffer
     temp_buffer[0] = '$';
-    temp_buffer[1] = hex_lookup_table[(msg->sid >> 8) & 0xf];
-    temp_buffer[2] = hex_lookup_table[(msg->sid >> 4) & 0xf];
-    temp_buffer[3] = hex_lookup_table[msg->sid & 0xf];
-    temp_buffer[4] = ':';
+    for (int j = 0; j < 8; ++j) {
+        temp_buffer[j + 1] = hex_lookup_table[(msg->sid >> (4 * (7 - j))) & 0xf];
+    }
+    temp_buffer[9] = ':';
+
     uint8_t i;
     for (i = 0; i < msg->data_len && i < 8; ++i) {
-        temp_buffer[3 * i + 5] = hex_lookup_table[(msg->data[i] >> 4)];
-        temp_buffer[3 * i + 6] = hex_lookup_table[(msg->data[i] & 0xf)];
-        temp_buffer[3 * i + 7] = ',';
+        temp_buffer[3 * i + 10] = hex_lookup_table[(msg->data[i] >> 4)];
+        temp_buffer[3 * i + 11] = hex_lookup_table[(msg->data[i] & 0xf)];
+        temp_buffer[3 * i + 12] = ',';
     }
     i -= 1;
-    temp_buffer[3 * i + 7] = '\n';
-    temp_buffer[3 * i + 8] = '\r';
-    temp_buffer[3 * i + 9] = '\0';
+    temp_buffer[3 * i + 12] = '\n';
+    temp_buffer[3 * i + 13] = '\r';
+    temp_buffer[3 * i + 14] = '\0';
 
     // Writes temp_buffer to a string
     if (usb_app_write_string(temp_buffer, strlen(temp_buffer))) {
