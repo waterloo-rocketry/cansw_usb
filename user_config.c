@@ -22,7 +22,7 @@ static uint8_t set_debug_level = 0;
 static uint8_t temp_num = 0;
 static bool set_sensor_messages = true;
 static bool sid_sent = false;
-static char data_to_send[6];
+static char data_to_send[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 static uint8_t data_index = 2;
 static uint8_t num_data_sent = 0;
 
@@ -53,15 +53,15 @@ void parse_usb_string(const char *input) {
 
                 // Case 3: check for if the sid and data being sent is valid (if the message is a
                 // CAN message)
-                // --> sid contains 1-3 nibbles
+                // --> sid contains 1-8 nibbles
                 // --> each data value contains 1-2 nibbles
                 case CHECK_DATA:
                     if (char_to_check == ',' || char_to_check == ';') {
                         data_index = 2;
                         if (!sid_sent) {
                             sid_sent = true;
-                            msg.sid = (int)strtol(data_to_send, &nullptr, 16);
-                            data_to_send[4] = 0;
+                            msg.sid = strtol(data_to_send, &nullptr, 16);
+                            memset(data_to_send + 4, 0, 6);
                         } else {
                             msg.data[num_data_sent] = (int)strtol(data_to_send, &nullptr, 16);
                             num_data_sent++;
@@ -74,7 +74,7 @@ void parse_usb_string(const char *input) {
                             break;
                         }
 
-                    } else if (!sid_sent && data_index < 5) {
+                    } else if (!sid_sent && data_index < 10) {
                         data_to_send[data_index] = char_to_check;
                         data_index++;
                         break;
@@ -124,9 +124,7 @@ void parse_usb_string(const char *input) {
                                 mcp_can_send(&msg);
                                 num_data_sent = 0;
                                 sid_sent = false;
-                                data_to_send[2] = 0;
-                                data_to_send[3] = 0;
-                                data_to_send[4] = 0;
+                                memset(data_to_send + 2, 0, 8);
                                 break;
                         }
                     } // @suppress("No break at end of case")
