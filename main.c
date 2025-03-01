@@ -63,16 +63,9 @@ void main(void) {
     spi_init();
 
     // initialize the CAN module
-    can_timing_t can_setup;
-    can_setup.brp = 1;
-    can_setup.sjw = 3;
-    can_setup.btlmode = 0x01;
-    can_setup.sam = 0;
-    can_setup.seg1ph = 0x04;
-    can_setup.prseg = 0;
-    can_setup.seg2ph = 0x04;
-
-    mcp_can_init(&can_setup, spi_read, spi_write, cs_drive);
+    can_timing_t can_timing;
+    can_generate_timing_params(12000000, &can_timing);
+    mcp_can_init(&can_timing, spi_read, spi_write, cs_drive);
 
     BLINK_LEDS(50, 300);
 
