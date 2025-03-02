@@ -65,6 +65,20 @@
 // get/set RA1 procedures
 #define RA1_GetValue()              PORTAbits.RA1
 
+// get/set IO_RA5 aliases
+#define IO_RA5_TRIS                 TRISAbits.TRISA5
+#define IO_RA5_LAT                  LATAbits.LATA5
+#define IO_RA5_PORT                 PORTAbits.RA5
+#define IO_RA5_WPU                  WPUAbits.WPUA5
+#define IO_RA5_SetHigh()            do { LATAbits.LATA5 = 1; } while(0)
+#define IO_RA5_SetLow()             do { LATAbits.LATA5 = 0; } while(0)
+#define IO_RA5_Toggle()             do { LATAbits.LATA5 = ~LATAbits.LATA5; } while(0)
+#define IO_RA5_GetValue()           PORTAbits.RA5
+#define IO_RA5_SetDigitalInput()    do { TRISAbits.TRISA5 = 1; } while(0)
+#define IO_RA5_SetDigitalOutput()   do { TRISAbits.TRISA5 = 0; } while(0)
+#define IO_RA5_SetPullup()          do { WPUAbits.WPUA5 = 1; } while(0)
+#define IO_RA5_ResetPullup()        do { WPUAbits.WPUA5 = 0; } while(0)
+
 /**
    @Param
     none
@@ -88,6 +102,90 @@ void PIN_MANAGER_Initialize (void);
     PIN_MANAGER_IOC();
  */
 void PIN_MANAGER_IOC(void);
+
+
+/**
+ * @Param
+    none
+ * @Returns
+    none
+ * @Description
+    Interrupt on Change Handler for the IOCAF5 pin functionality
+ * @Example
+    IOCAF5_ISR();
+ */
+void IOCAF5_ISR(void);
+
+/**
+  @Summary
+    Interrupt Handler Setter for IOCAF5 pin interrupt-on-change functionality
+
+  @Description
+    Allows selecting an interrupt handler for IOCAF5 at application runtime
+    
+  @Preconditions
+    Pin Manager intializer called
+
+  @Returns
+    None.
+
+  @Param
+    InterruptHandler function pointer.
+
+  @Example
+    PIN_MANAGER_Initialize();
+    IOCAF5_SetInterruptHandler(MyInterruptHandler);
+
+*/
+void IOCAF5_SetInterruptHandler(void (* InterruptHandler)(void));
+
+/**
+  @Summary
+    Dynamic Interrupt Handler for IOCAF5 pin
+
+  @Description
+    This is a dynamic interrupt handler to be used together with the IOCAF5_SetInterruptHandler() method.
+    This handler is called every time the IOCAF5 ISR is executed and allows any function to be registered at runtime.
+    
+  @Preconditions
+    Pin Manager intializer called
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    PIN_MANAGER_Initialize();
+    IOCAF5_SetInterruptHandler(IOCAF5_InterruptHandler);
+
+*/
+extern void (*IOCAF5_InterruptHandler)(void);
+
+/**
+  @Summary
+    Default Interrupt Handler for IOCAF5 pin
+
+  @Description
+    This is a predefined interrupt handler to be used together with the IOCAF5_SetInterruptHandler() method.
+    This handler is called every time the IOCAF5 ISR is executed. 
+    
+  @Preconditions
+    Pin Manager intializer called
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    PIN_MANAGER_Initialize();
+    IOCAF5_SetInterruptHandler(IOCAF5_DefaultInterruptHandler);
+
+*/
+void IOCAF5_DefaultInterruptHandler(void);
 
 
 
