@@ -48,31 +48,28 @@
 
 #include "interrupt_manager.h"
 #include "mcc.h"
-#include "../usb_app.h"
-
-static uint16_t counter = 0;
 
 void __interrupt() INTERRUPT_InterruptManager (void)
 {
     // interrupt handler
-    if(INTCONbits.PEIE == 1)
+    if(INTCONbits.IOCIE == 1 && INTCONbits.IOCIF == 1)
+    {
+        PIN_MANAGER_IOC();
+    }
+    else if(INTCONbits.PEIE == 1)
     {
         if(PIE2bits.USBIE == 1 && PIR2bits.USBIF == 1)
         {
             USB_USBDeviceTasks();
         } 
-        else if (PIE1bits.TMR1IE == 1 && PIR1bits.TMR1IF == 1)
-        {
-            PIR1bits.TMR1IF = 0;
-        }
         else
         {
-            //Unhandled interrupt
+            //Unhandled Interrupt
         }
     }      
     else
     {
-        //Unhandled interrupt
+        //Unhandled Interrupt
     }
 }
 /**

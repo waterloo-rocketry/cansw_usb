@@ -1,4 +1,4 @@
-#include "canlib/can.h"
+#include "canlib/canlib.h"
 
 #include "mcc_generated_files/mcc.h"
 #include "spi.h"
@@ -49,6 +49,10 @@ static void visual_heartbeat(void) {
     }
 }
 
+void mcp_isr(void) {
+    LATC4 = ~LATC4;
+}
+
 void main(void) {
     // initialize the device
     SYSTEM_Initialize();
@@ -57,22 +61,15 @@ void main(void) {
 
 #ifdef DAQ_CAN_SUPPORT
     LATC4 = 0; // Rocket Power off by default
-	TRISC4 = 0;
+    TRISC4 = 0;
 #endif
 
     spi_init();
 
     // initialize the CAN module
-    can_timing_t can_setup;
-    can_setup.brp = 1;
-    can_setup.sjw = 3;
-    can_setup.btlmode = 0x01;
-    can_setup.sam = 0;
-    can_setup.seg1ph = 0x04;
-    can_setup.prseg = 0;
-    can_setup.seg2ph = 0x04;
-
-    mcp_can_init(&can_setup, spi_read, spi_write, cs_drive);
+    can_timing_t can_timing;
+    can_generate_timing_params(12000000, &can_timing);
+    mcp_can_init(&can_timing, spi_read, spi_write, cs_drive);
 
     BLINK_LEDS(50, 300);
 
@@ -82,6 +79,8 @@ void main(void) {
 
     // When using interrupts, you need to set the Global and Peripheral Interrupt Enable bits
     // Use the following macros to:
+
+    IOCAF5_SetInterruptHandler(mcp_isr);
 
     // Enable the Global Interrupts
     INTERRUPT_GlobalInterruptEnable();

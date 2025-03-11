@@ -22,9 +22,9 @@ please contact mla_licensing@microchip.com
 
 #define FIXED_ADDRESS_MEMORY
 
-#define IN_DATA_BUFFER_ADDRESS_TAG      @ 0x2080
-#define OUT_DATA_BUFFER_ADDRESS_TAG     @ 0x20C0
-#define CONTROL_BUFFER_ADDRESS_TAG      @ 0x2100
-#define DRIVER_DATA_ADDRESS_TAG         @ 0x2108
+#define IN_DATA_BUFFER_ADDRESS_TAG      @0x2080
+#define OUT_DATA_BUFFER_ADDRESS_TAG     @0x20C0
+#define CONTROL_BUFFER_ADDRESS_TAG      @0x2100
+#define DRIVER_DATA_ADDRESS_TAG         @0x2108
 
 #endif //FIXED_MEMORY_ADDRESS

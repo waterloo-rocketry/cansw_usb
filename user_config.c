@@ -4,8 +4,7 @@
 #include <string.h>
 #include <xc.h>
 
-#include "canlib/mcp2515/mcp_2515.h"
-#include "canlib/can_common.h"
+#include "canlib/canlib.h"
 
 #include "usb_app.h"
 #include "user_config.h"
@@ -18,9 +17,7 @@ typedef enum {
 } level;
 
 static level check_level = CHECK_CHAR;
-static uint8_t set_debug_level = 0;
 static uint8_t temp_num = 0;
-static bool set_sensor_messages = true;
 static bool sid_sent = false;
 static char data_to_send[11] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 static uint8_t data_index = 2;
@@ -90,21 +87,12 @@ void parse_usb_string(const char *input) {
                     check_level = CHECK_CHAR;
                     if (input[i] == ';') {
                         switch (save_type) {
-                            case 'G':
-                                set_debug_level = temp_num;
-                                break;
-                            case 'S':
-                                set_sensor_messages = temp_num;
-                                break;
                             case 'L':
                                 strcpy(sensor_check, "are");
-                                if (!allow_sensor_messages()) {
-                                    strcat(sensor_check, " not");
-                                }
                                 msg_length = sprintf(config_msg,
                                                      "Current Config: Max debug level = %d & "
                                                      "Sensor messages %s allowed!\r\n",
-                                                     max_debug_level(),
+                                                     0,
                                                      sensor_check);
                                 msg_length = strlen(config_msg);
                                 usb_app_write_string(config_msg, msg_length);
@@ -166,15 +154,4 @@ void parse_usb_string(const char *input) {
             }
         }
     }
-}
-
-// returns the max debug level
-uint8_t max_debug_level() {
-    return set_debug_level;
-}
-
-// returns if sensor messages are allowed to be printed
-// 1 = true (print) and 0 = false (don't print)
-bool allow_sensor_messages() {
-    return set_sensor_messages;
 }

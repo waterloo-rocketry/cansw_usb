@@ -9,12 +9,12 @@
          <string>class com.microchip.mcc.modules.mcu16.deviceclass.CDCDevice.CDCDevice</string>
       </entry>
       <entry>
-         <string>VendorDevice</string>
-         <string>class com.microchip.mcc.modules.mcu16.deviceclass.VendorDevice.VendorDevice</string>
-      </entry>
-      <entry>
          <string>INTERNAL OSCILLATOR</string>
          <string>class com.microchip.mcc.mcu8.systemManager.osc.Osc</string>
+      </entry>
+      <entry>
+         <string>VendorDevice</string>
+         <string>class com.microchip.mcc.modules.mcu16.deviceclass.VendorDevice.VendorDevice</string>
       </entry>
       <entry>
          <string>USB</string>
@@ -38,8 +38,8 @@
       </entry>
    </usedClasses>
    <usedLibraries class="java.util.ArrayList">
-      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.USBDEVICELite.USBDEVICELite" version="1.26"/>
       <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.mcu8.Mcu8PeripheralLibrary" version="1.75"/>
+      <ILibraryFile class="com.microchip.mcc.core.library.BaseLibraryFile" libraryClass="com.microchip.mcc.USBDEVICELite.USBDEVICELite" version="1.26"/>
    </usedLibraries>
    <tokenMap class="java.util.HashMap">
       <entry>
@@ -504,7 +504,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="INTERNAL OSCILLATOR" registerAlias="OSCCON"/>
-         <value>124</value>
+         <value>252</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="USB" registerAlias="UEP5" settingAlias="EPCONDIS" alias="Enable control transfers"/>
@@ -784,7 +784,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="Pin Module" name="ioc RA5"/>
-         <value>none</value>
+         <value>negative</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="Pin Module" name="anselUserSetRA4"/>
@@ -820,7 +820,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="INTERNAL OSCILLATOR" name="CustomSoftwarePll"/>
-         <value>disabled</value>
+         <value>enabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="USB" registerAlias="UEP1" settingAlias="EPOUTEN"/>
@@ -867,16 +867,16 @@
          <value>0</value>
       </entry>
       <entry>
+         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="CDCDevice" name="AbstractManagementD1"/>
+         <value>enabled</value>
+      </entry>
+      <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="USB" registerAlias="UEP7" settingAlias="EPCONDIS" alias="Disable control transfers"/>
          <value>1</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="USB" registerAlias="UEP7" settingAlias="EPHSHK" alias="Enabled"/>
          <value>1</value>
-      </entry>
-      <entry>
-         <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="CDCDevice" name="AbstractManagementD1"/>
-         <value>enabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="CDCDevice" name="AbstractManagementD2"/>
@@ -1140,7 +1140,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="USB" name="SerialNumberString"/>
-         <value></value>
+         <value/>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="IOCAF" settingAlias="IOCAF1"/>
@@ -1180,7 +1180,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="Pin Module" registerAlias="IOCAN"/>
-         <value>0</value>
+         <value>32</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="USB" registerAlias="UIR" settingAlias="TRNIF" alias="Not completed"/>
@@ -1332,7 +1332,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="INTERNAL OSCILLATOR" name="CustomHardwarePll"/>
-         <value>enabled</value>
+         <value>disabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="IOCAN" settingAlias="IOCAN4" alias="disabled"/>
@@ -1528,7 +1528,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.RegisterKey" moduleName="System Module" registerAlias="CONFIG2"/>
-         <value>12227</value>
+         <value>11971</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="USB" registerAlias="UCFG" settingAlias="FSEN" alias="Low-speed"/>
@@ -1776,7 +1776,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="IOCAN" settingAlias="IOCAN5"/>
-         <value>disabled</value>
+         <value>enabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="System Module" registerAlias="CONFIG1" settingAlias="BOREN"/>
@@ -2320,7 +2320,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="Pin Module" name="Custom Name RA5"/>
-         <value/>
+         <value>IO_RA5</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="Pin Module" name="Custom Name RA1"/>
@@ -2360,7 +2360,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="INTERNAL OSCILLATOR" registerAlias="OSCCON" settingAlias="SPLLEN"/>
-         <value>disabled</value>
+         <value>enabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="USB" registerAlias="UEIE" settingAlias="CRC5EE" alias="Enabled"/>
@@ -2444,7 +2444,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="Pin Module" name="RA5"/>
-         <value>disabled</value>
+         <value>input</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="ANSELA" settingAlias="ANSA4"/>
@@ -2452,7 +2452,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="INTERNAL OSCILLATOR" name="USB_LOADED"/>
-         <value>enabled</value>
+         <value>disabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="VendorDevice" name="VendorClass"/>
@@ -2524,7 +2524,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="Pin Module" name="iocUserSet RA5"/>
-         <value>disabled</value>
+         <value>enabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.CustomKey" moduleName="USB" name="ProductString"/>
@@ -2688,7 +2688,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="Pin Module" registerAlias="IOCI" settingAlias="enable"/>
-         <value>disabled</value>
+         <value>enabled</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="LATC" settingAlias="LATC1" alias="set"/>
@@ -2748,7 +2748,7 @@
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.SettingKey" moduleName="System Module" registerAlias="CONFIG2" settingAlias="PLLEN"/>
-         <value>ENABLED</value>
+         <value>DISABLED</value>
       </entry>
       <entry>
          <key class="com.microchip.mcc.core.tokenManager.OptionKey" moduleName="Pin Module" registerAlias="TRISC" settingAlias="TRISC0" alias="output"/>
@@ -2814,11 +2814,11 @@
       </entry>
       <entry>
          <file>mcc_generated_files/usb/usb_descriptors.c</file>
-         <hash>29cfaadd2c7c8305e37573a47f4eb552893fd885034ed6d2368b650a8193220c</hash>
+         <hash>81501d17ee8072d9e707648ae45bfe990d07327f828985ac0ab3d82c8613b7ca</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/pin_manager.h</file>
-         <hash>ad102065eec3d38c772bfdb8472158cddc8d87b3ea19e4a68220306116182700</hash>
+         <hash>4283bea11df8825c0642c2a3a0a09b4e45511c7e691f6a6abaaa30c149e2fa6d</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/usb/example_mcc_usb_cdc.c</file>
@@ -2849,12 +2849,12 @@
          <hash>7dcf0276e9b9f3f533e68da755a4fc8c191cf5dd790f8dc4b9be973b3a645e2a</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files/usb/usb_device_config.h</file>
-         <hash>e0431d8a35c65df31534252ad495ad7f14742ceacdb179de9cef95aba8daddc4</hash>
-      </entry>
-      <entry>
          <file>mcc_generated_files/device_config.h</file>
          <hash>77838b3411ac5b535e093f38b9c331ea25bf84e92503657dad9fca124f336238</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/usb/usb_device_config.h</file>
+         <hash>d2c02716125707417a9455509fb35cc528aa70841247c89dde885be0fe79b578</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/usb/usb.h</file>
@@ -2878,23 +2878,23 @@
       </entry>
       <entry>
          <file>mcc_generated_files/device_config.c</file>
-         <hash>ae6f5aeb807344379cb860b7782e6a73932421e0671179b3c966c2541cf400e1</hash>
+         <hash>49c947ddb66e34f0b38c17230e4393a84446b2781f1d5272893d427b8055884b</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/interrupt_manager.c</file>
-         <hash>1f79600082db58340212cf4815e7187f82f0ce217c8d0ddf3b1b036fab1cad4b</hash>
+         <hash>f6388244725948a782a34cd99845cb19f88aa29186e95e27aa42f7eda5fd1893</hash>
+      </entry>
+      <entry>
+         <file>mcc_generated_files/mcc.c</file>
+         <hash>125d1f38a8290638a41874e31256a5076d2c73e5e98e9117d293182006e13696</hash>
       </entry>
       <entry>
          <file>mcc_generated_files/usb/usb_hal.h</file>
          <hash>4e4ccc67c8e238ad1033ff8b9d04be5e9f00ba01ee536ac25d203cba119fe24b</hash>
       </entry>
       <entry>
-         <file>mcc_generated_files/mcc.c</file>
-         <hash>220b2f46156fadfd70c46f9e99a411f69d289d34f3aaca43f4e222681109995d</hash>
-      </entry>
-      <entry>
          <file>mcc_generated_files/pin_manager.c</file>
-         <hash>81b3a9a5dffb794dbddbc17067b5d6455a800374204ede5b4e15170639295367</hash>
+         <hash>e83e81f35ff01c88ca862619607e89c00f36d84238ef9860cf19c93293054e1a</hash>
       </entry>
    </generatedFileHashHistoryMap>
 </config>

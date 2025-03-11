@@ -53,6 +53,8 @@
 
 
 
+void (*IOCAF5_InterruptHandler)(void);
+
 
 void PIN_MANAGER_Initialize(void)
 {
@@ -80,14 +82,70 @@ void PIN_MANAGER_Initialize(void)
     WPUA = 0x00;
     OPTION_REGbits.nWPUEN = 1;
 
+
+
     /**
     APFCONx registers
     */
     APFCON = 0x00;
+
+    /**
+    IOCx registers 
+    */
+    //interrupt on change for group IOCAF - flag
+    IOCAFbits.IOCAF5 = 0;
+    //interrupt on change for group IOCAN - negative
+    IOCANbits.IOCAN5 = 1;
+    //interrupt on change for group IOCAP - positive
+    IOCAPbits.IOCAP5 = 0;
+
+
+
+    // register default IOC callback functions at runtime; use these methods to register a custom function
+    IOCAF5_SetInterruptHandler(IOCAF5_DefaultInterruptHandler);
+   
+    // Enable IOCI interrupt 
+    INTCONbits.IOCIE = 1; 
+    
 }
   
 void PIN_MANAGER_IOC(void)
 {   
+	// interrupt on change for pin IOCAF5
+    if(IOCAFbits.IOCAF5 == 1)
+    {
+        IOCAF5_ISR();  
+    }	
+}
+
+/**
+   IOCAF5 Interrupt Service Routine
+*/
+void IOCAF5_ISR(void) {
+
+    // Add custom IOCAF5 code
+
+    // Call the interrupt handler for the callback registered at runtime
+    if(IOCAF5_InterruptHandler)
+    {
+        IOCAF5_InterruptHandler();
+    }
+    IOCAFbits.IOCAF5 = 0;
+}
+
+/**
+  Allows selecting an interrupt handler for IOCAF5 at application runtime
+*/
+void IOCAF5_SetInterruptHandler(void (* InterruptHandler)(void)){
+    IOCAF5_InterruptHandler = InterruptHandler;
+}
+
+/**
+  Default interrupt handler for IOCAF5
+*/
+void IOCAF5_DefaultInterruptHandler(void){
+    // add your IOCAF5 interrupt custom code
+    // or set custom function using IOCAF5_SetInterruptHandler()
 }
 
 /**
