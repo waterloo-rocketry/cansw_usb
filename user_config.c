@@ -4,8 +4,8 @@
 #include <string.h>
 #include <xc.h>
 
-#include "canlib/mcp2515/mcp_2515.h"
 #include "canlib/canlib.h"
+#include "canlib/mcp2515/mcp_2515.h"
 
 #include "usb_app.h"
 #include "user_config.h"
@@ -50,7 +50,6 @@ void parse_usb_string(const char *input) {
             // That is, make them uppercase
             char_to_check = toupper(input[i]);
             switch (check_level) {
-
                 // Case 3: check for if the sid and data being sent is valid (if the message is a
                 // CAN message)
                 // --> sid contains 1-8 nibbles
@@ -101,11 +100,13 @@ void parse_usb_string(const char *input) {
                                 if (!allow_sensor_messages()) {
                                     strcat(sensor_check, " not");
                                 }
-                                msg_length = sprintf(config_msg,
-                                                     "Current Config: Max debug level = %d & "
-                                                     "Sensor messages %s allowed!\r\n",
-                                                     max_debug_level(),
-                                                     sensor_check);
+                                msg_length = sprintf(
+                                    config_msg,
+                                    "Current Config: Max debug level = %d & "
+                                    "Sensor messages %s allowed!\r\n",
+                                    max_debug_level(),
+                                    sensor_check
+                                );
                                 msg_length = strlen(config_msg);
                                 usb_app_write_string(config_msg, msg_length);
                                 break;

@@ -39,7 +39,8 @@ uint8_t usb_app_report_can_msg(const can_msg_t *msg) {
     // length for 1 byte ("XX,") * number of bytes-1 + extras and last byte
     char temp_buffer[3 * 7 + 15];
     const char hex_lookup_table[16] = {
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+    };
 
     // temp_buffer is the character array of the message that gets printed
     // out when usb_app_report_can_msg is called on.
