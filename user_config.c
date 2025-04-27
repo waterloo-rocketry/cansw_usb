@@ -5,7 +5,7 @@
 #include <xc.h>
 
 #include "canlib/mcp2515/mcp_2515.h"
-#include "canlib/can_common.h"
+#include "canlib/canlib.h"
 
 #include "usb_app.h"
 #include "user_config.h"
