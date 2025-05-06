@@ -50,14 +50,16 @@ int main() {
     total_tests++;
     parse_usb_string("G0;S0;");
     if (max_debug_level() != 0 || allow_sensor_messages()) {
-        printf("%sTEST FAILED%s: setting both debug level and sensor messages\n",
-               RED_TEXT,
-               RESET_TEXT);
+        printf(
+            "%sTEST FAILED%s: setting both debug level and sensor messages\n", RED_TEXT, RESET_TEXT
+        );
         failed_tests++;
     } else {
-        printf("%sTEST PASSED%s: setting both debug level and sensor messages\n",
-               GREEN_TEXT,
-               RESET_TEXT);
+        printf(
+            "%sTEST PASSED%s: setting both debug level and sensor messages\n",
+            GREEN_TEXT,
+            RESET_TEXT
+        );
     }
 
     // TEST 4: change debug level across three calls to parse usb string
@@ -67,14 +69,18 @@ int main() {
     parse_usb_string(";");
     if (max_debug_level() !=
         3) { // was "if (max_debug_level() != 2)" --> but should set debug level to 3
-        printf("%sTEST FAILED%s: change debug level in three calls to parse_usb_string\n",
-               RED_TEXT,
-               RESET_TEXT);
+        printf(
+            "%sTEST FAILED%s: change debug level in three calls to parse_usb_string\n",
+            RED_TEXT,
+            RESET_TEXT
+        );
         failed_tests++;
     } else {
-        printf("%sTEST PASSED%s: change debug level in three calls to parse_usb_string\n",
-               GREEN_TEXT,
-               RESET_TEXT);
+        printf(
+            "%sTEST PASSED%s: change debug level in three calls to parse_usb_string\n",
+            GREEN_TEXT,
+            RESET_TEXT
+        );
     }
 
     // TEST 5: send some random characters, make sure nothing goes wrong
@@ -106,14 +112,18 @@ int main() {
     parse_usb_string("S1;G2;");
     parse_usb_string("S0G1;"); // s should still be 1, G should be 1
     if ((!allow_sensor_messages()) || max_debug_level() != 1) {
-        printf("%sTEST FAILED%s: interrupt setting sensor level with debug level\n",
-               RED_TEXT,
-               RESET_TEXT);
+        printf(
+            "%sTEST FAILED%s: interrupt setting sensor level with debug level\n",
+            RED_TEXT,
+            RESET_TEXT
+        );
         failed_tests++;
     } else {
-        printf("%sTEST PASSED%s: interrupt setting sensor level with debug level\n",
-               GREEN_TEXT,
-               RESET_TEXT);
+        printf(
+            "%sTEST PASSED%s: interrupt setting sensor level with debug level\n",
+            GREEN_TEXT,
+            RESET_TEXT
+        );
     }
 
     // TEST 8: Set both sensor level and debug level over 6 characters
@@ -204,9 +214,11 @@ int main() {
     parse_usb_string(";");
 
     // End of tests
-    printf("END OF TESTS: %u tests total, %u tests %sfailed%s\n",
-           total_tests,
-           failed_tests,
-           failed_tests ? RED_TEXT : GREEN_TEXT,
-           RESET_TEXT);
+    printf(
+        "END OF TESTS: %u tests total, %u tests %sfailed%s\n",
+        total_tests,
+        failed_tests,
+        failed_tests ? RED_TEXT : GREEN_TEXT,
+        RESET_TEXT
+    );
 }

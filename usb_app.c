@@ -1,7 +1,7 @@
 #include <string.h>
 #include <xc.h>
 
-#include "canlib/can_common.h"
+#include "canlib/canlib.h"
 
 #include "mcc_generated_files/usb/usb.h"
 #include "usb_app.h"
@@ -39,23 +39,8 @@ uint8_t usb_app_report_can_msg(const can_msg_t *msg) {
     // length for 1 byte ("XX,") * number of bytes-1 + extras and last byte
     char temp_buffer[3 * 7 + 15];
     const char hex_lookup_table[16] = {
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-
-    // Check for if the incoming message is a sensor data
-    // If message is sensor data, check for if the sensor messages is allowed to
-    // be printed If sensor messages are not allowed to be printed, exits
-    // function early If sensor messages allowed, it prints the message normally
-    if (is_sensor_data(msg)) {
-        if (!allow_sensor_messages()) {
-            return 0;
-        }
-    }
-
-    // Check for if the message coming in has a sid value > max_debug_level
-    // If true, exits function early, otherwise it prints the message normally
-    if (message_debug_level(msg) > max_debug_level()) {
-        return 0;
-    }
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'
+    };
 
     // temp_buffer is the character array of the message that gets printed
     // out when usb_app_report_can_msg is called on.
