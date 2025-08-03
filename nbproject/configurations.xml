@@ -47,6 +47,8 @@
       <logicalFolder name="f1" displayName="canlib" projectFiles="true">
         <itemPath>canlib/mcp2515/mcp_2515.c</itemPath>
         <itemPath>canlib/util/timing_util.c</itemPath>
+        <itemPath>canlib/message/msg_actuator.c</itemPath>
+        <itemPath>canlib/message/msg_common.c</itemPath>
       </logicalFolder>
       <logicalFolder name="MCC Generated Files"
                      displayName="MCC Generated Files"
@@ -79,7 +81,7 @@
         <targetDevice>PIC16F1455</targetDevice>
         <targetHeader></targetHeader>
         <targetPluginBoard></targetPluginBoard>
-        <platformTool>snap</platformTool>
+        <platformTool>noID</platformTool>
         <languageToolchain>XC8</languageToolchain>
         <languageToolchainVersion>2.50</languageToolchainVersion>
         <platform>2</platform>

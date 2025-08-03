@@ -10,7 +10,7 @@
 #define LED_1_ON() (LATC4 = 0)
 #define LED_2_ON() (LATC5 = 0)
 
-#ifdef DAQ_CAN_SUPPORT
+#if defined(DAQ_CAN_SUPPORT_ROCKET) || defined(DAQ_CAN_SUPPORT_PAYLOAD)
 #define BLINK_LEDS(before_time_off, after_time_on)                                                 \
     do {                                                                                           \
         __delay_ms(before_time_off);                                                               \
@@ -33,14 +33,14 @@
 static void visual_heartbeat(void) {
     static bool led_on = false;
     if (led_on) {
-#ifdef DAQ_CAN_SUPPORT
+#if defined(DAQ_CAN_SUPPORT_ROCKET) || defined(DAQ_CAN_SUPPORT_PAYLOAD)
         LED_2_OFF();
 #else
         LED_1_OFF();
 #endif
         led_on = false;
     } else {
-#ifdef DAQ_CAN_SUPPORT
+#if defined(DAQ_CAN_SUPPORT_ROCKET) || defined(DAQ_CAN_SUPPORT_PAYLOAD)
         LED_2_ON();
 #else
         LED_1_ON();
@@ -55,8 +55,8 @@ void main(void) {
 
     BLINK_LEDS(50, 100);
 
-#ifdef DAQ_CAN_SUPPORT
-    LATC4 = 0; // Rocket Power off by default
+#if defined(DAQ_CAN_SUPPORT_ROCKET) || defined(DAQ_CAN_SUPPORT_PAYLOAD)
+    LATC4 = 0; // Charging off by default
     TRISC4 = 0;
 #endif
 

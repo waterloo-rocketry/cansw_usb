@@ -113,12 +113,21 @@ void parse_usb_string(const char *input) {
                             case 'M':
                                 msg.data_len = num_data_sent;
 
-#ifdef DAQ_CAN_SUPPORT
+#if defined(DAQ_CAN_SUPPORT_ROCKET)
                                 // Check if income message is a rocket power relay actuator message
                                 int actuator_id = get_actuator_id(&msg);
 
-                                if (actuator_id == ACTUATOR_ROCKET_POWER) {
-                                    LATC4 = (get_req_actuator_state(&msg) == ACTUATOR_ON);
+                                if (actuator_id == ACTUATOR_ROCKET_CHARGE_ENABLE) {
+                                    LATC4 = (get_cmd_actuator_state(&msg) == ACT_STATE_ON);
+                                }
+#endif
+
+#if defined(DAQ_CAN_SUPPORT_PAYLOAD)
+                                // Check if income message is a rocket power relay actuator message
+                                int actuator_id = get_actuator_id(&msg);
+
+                                if (actuator_id == ACTUATOR_PAYLOAD_CHARGE_ENABLE) {
+                                    LATC4 = (get_cmd_actuator_state(&msg) == ACT_STATE_ON);
                                 }
 #endif
 
