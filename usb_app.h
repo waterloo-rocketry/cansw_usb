@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include "canlib/mcp2515/mcp_2515.h"
+#include "canlib/mcp2515/mcp2515.h"
 
 void usb_app_heartbeat(void);
 

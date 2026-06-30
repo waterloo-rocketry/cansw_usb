@@ -72,7 +72,7 @@ void main(void) {
     can_setup.prseg = 0;
     can_setup.seg2ph = 0x04;
 
-    mcp_can_init(&can_setup, spi_read, spi_write, cs_drive);
+    mcp2515_can_init(&can_setup, spi_read, spi_write, cs_drive);
 
     BLINK_LEDS(50, 300);
 
@@ -93,7 +93,7 @@ void main(void) {
         // if CAN module fires interrupt pin, receive a message
         if (!PORTAbits.RA5) {
             can_msg_t rcv;
-            if (mcp_can_receive(&rcv)) {
+            if (mcp2515_can_receive(&rcv)) {
                 usb_app_report_can_msg(&rcv);
                 // visual_heartbeat();
             }

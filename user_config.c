@@ -5,7 +5,7 @@
 #include <xc.h>
 
 #include "canlib/canlib.h"
-#include "canlib/mcp2515/mcp_2515.h"
+#include "canlib/mcp2515/mcp2515.h"
 
 #include "usb_app.h"
 #include "user_config.h"
@@ -131,7 +131,7 @@ void parse_usb_string(const char *input) {
                                 }
 #endif
 
-                                mcp_can_send(&msg);
+                                mcp2515_can_send(&msg);
                                 num_data_sent = 0;
                                 sid_sent = false;
                                 memset(data_to_send + 2, 0, 8);
