@@ -113,22 +113,26 @@ void parse_usb_string(const char *input) {
                             case 'M':
                                 msg.data_len = num_data_sent;
 
-#if defined(DAQ_CAN_SUPPORT_ROCKET)
-                                // Check if income message is a rocket power relay actuator message
-                                int actuator_id = get_actuator_id(&msg);
-
-                                if (actuator_id == ACTUATOR_ROCKET_CHARGE_ENABLE) {
-                                    LATC4 = (get_cmd_actuator_state(&msg) == ACT_STATE_ON);
-                                }
+#if defined(DAQ_CAN_SUPPORT_UPPER)
+                                // Check if income message is a rocket upper section power relay actuator message
+                                can_actuator_id_t actuator_id = 0;
+								if((get_actuator_id(&msg, &actuator_id) == W_SUCCESS) && (actuator_id == ACTUATOR_ROCKET_CHARGE_ENABLE)) { // FIXME: ROCKET_UPPER_CHARGE_ENABLE
+								    can_actuator_state_t actuator_state = ACT_STATE_UNK;
+								    if(get_cmd_actuator_state(&msg, &actuator_state) == W_SUCCESS) {
+									    LATC4 = (actuator_state == ACT_STATE_ON);
+									}
+								}
 #endif
 
-#if defined(DAQ_CAN_SUPPORT_PAYLOAD)
-                                // Check if income message is a rocket power relay actuator message
-                                int actuator_id = get_actuator_id(&msg);
-
-                                if (actuator_id == ACTUATOR_PAYLOAD_CHARGE_ENABLE) {
-                                    LATC4 = (get_cmd_actuator_state(&msg) == ACT_STATE_ON);
-                                }
+#if defined(DAQ_CAN_SUPPORT_INJECTOR)
+                                // Check if income message is a rocket injector section power relay actuator message
+                                can_actuator_id_t actuator_id = 0;
+								if((get_actuator_id(&msg, &actuator_id) == W_SUCCESS) && (actuator_id == ACTUATOR_PAYLOAD_CHARGE_ENABLE)) { // FIXME: ROCKET_INJECTOR_CHARGE_ENABLE
+								    can_actuator_state_t actuator_state = ACT_STATE_UNK;
+								    if(get_cmd_actuator_state(&msg, &actuator_state) == W_SUCCESS) {
+									    LATC4 = (actuator_state == ACT_STATE_ON);
+									}
+								}
 #endif
 
                                 mcp2515_can_send(&msg);
